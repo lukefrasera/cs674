@@ -10,7 +10,7 @@ INCLUDE_DIRECTORIES(
 
 # Setup image library header directory
 SET(image_HEADERS
-  ${PROJECT_SOURCE_DIR}/include/ReadImage.h
+  #${PROJECT_SOURCE_DIR}/include/ReadImage.h
   ${PROJECT_SOURCE_DIR}/include/WriteImage.h
   ${PROJECT_SOURCE_DIR}/include/ReadImageHeader.h
   ${PROJECT_SOURCE_DIR}/include/image.cpp

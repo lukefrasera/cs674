@@ -9,9 +9,9 @@
 using namespace std;
 
 
-int readImageHeader(char[], int&, int&, int&, bool&);
-int readImage(char[], ImageType&);
-int writeImage(char[], ImageType&);
+//int readImageHeader(char[], int&, int&, int&, bool&);
+//int readImage(char[], ImageType&);
+//int writeImage(char[], ImageType&);
 
 int main(int argc, char *argv[])
 {
