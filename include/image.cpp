@@ -77,4 +77,7 @@ void ImageType::getPixelVal(int i, int j, int& val)
  val = pixelValue[i][j];
 }
 
+int ImageType::getPixelVal(int i, int j) {
+  return pixelValue[i][j];
+}
 

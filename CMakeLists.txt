@@ -18,3 +18,4 @@ SET(image_HEADERS
 )
 # Include subdirectories
 ADD_SUBDIRECTORY(threshold_example)
+ADD_SUBDIRECTORY(assignment_01)

@@ -13,6 +13,7 @@ class ImageType {
    void setImageInfo(int, int, int);
    void setPixelVal(int, int, int);
    void getPixelVal(int, int, int&);
+   int getPixelVal(int, int);
  private:
    int N, M, Q;
    int **pixelValue;
