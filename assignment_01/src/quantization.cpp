@@ -54,6 +54,9 @@ int main(int argc, char* argv[]) {
     out_image = quantize(in_image, 32);
   }
   if (atoi(argv[2]) == 2) {
+    out_image = quantize(in_image, 8);
+  }
+  if (atoi(argv[2]) == 3) {
     out_image = quantize(in_image, 2);
   }
 
