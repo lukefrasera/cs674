@@ -48,10 +48,6 @@ int main(int argc, char *argv[]) {
 
   int * map = img_tools::InverseMap(in_cum_hist, out_cum_hist);
 
-  for (int i=0; i<256; ++i) {
-    printf("Map%d -> %d\n", i, map[i]);
-  }
-
   ImageType * mapped_image = img_tools::MapImage(map, in_image);
 
   // store to file
