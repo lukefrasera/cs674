@@ -22,3 +22,9 @@
 
 /build/*
 *~
+*.pdf
+*.aux
+*.blb
+*.log
+*.backup
+*.zip

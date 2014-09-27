@@ -7,3 +7,9 @@ include_directories(
 #  src/sample.cpp
 #  ${image_HEADERS}
 #)
+
+ADD_EXECUTABLE( correlation
+  src/correlation.cc
+  src/spatial_filtering.cc
+  ${image_HEADERS}
+)
