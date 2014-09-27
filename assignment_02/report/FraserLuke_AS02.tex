@@ -1,0 +1,52 @@
+\documentclass[letterpaper,10pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage[top=1in,bottom=1in,left=1in,right=1in]{geometry}
+
+%opening
+\title{Assignment 02 Report}
+\author{Luke Fraser}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This assignment is cnetered around the use of image filtering. Image filtering can bes used to perform many image processingoperations. The term filtering comes from signal processing in which there are low-pass, high-pass, band-pass, and band-reject filters. Each filter provides different image results. The use of these image filters has implications far beyond just blurring images. The use of filters allows for smoothing, sharpening, data recovery, image derivatives, and more. It is a useul tool to undersand when working with images in general.
+\end{abstract}
+
+\section{Spatial Filtering}
+Spatial filtering is used to perform many image processing operations. With spatial filtering you are able to smooth, sharpen. You can also find image derivatives use in edge detection. There are two central ways to perform filtering: convolution \& correlation. The two methods are very similar, but very slightly in their definition. The two methods are very useful image processing operators when analyzing image data.
+
+\subsection{Correlation}
+\subsection{Smoothing}
+\subsection{Sharpening}
+
+\section{Median Filtering}
+\section{Unsharp Masking and High Boost Filtering}
+
+\section{Conclusion}
+\end{document}
+
+% Math equtions
+
+% Forward Descrete Fourier transform
+%F(u)=\frac{1}{N}\sum_{x=0}^{N-1}f(x)\mathrm{e}^\frac{-j2\pi ux}{N}{}, x = 0,1,...,N-1
+
+% Inverse Descrete Fourier transoform
+%f(x)=\frac{1}{N}\sum_{u=0}^{N-1}F(u)\mathrm{e}^\frac{j2\pi ux}{N}{}, x = 0,1,...,N-1
+
+% Convolution
+%g(x,y)=w(x,y)*f(x,y)=\sum_{s=-\frac{K}{2}}^{\frac{K}{2}}\sum_{t=-\frac{K}{2}}^{\frac{K}{2}}w(s,t)f(x-s,y-t)
+
+% gradient
+%\nabla f=\begin{pmatrix}\frac{\partial x}{\partial y} \\ \frac{\partial f}{\partial x} \end{pmatrix}
+
+% Gaussian
+%G_{\sigma}(x,y)=\frac{1}{2\pi \sigma^2}\mathrm{e}^{-\frac{x^2+y^2}{2\sigma^2}}
