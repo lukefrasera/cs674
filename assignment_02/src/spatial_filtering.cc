@@ -41,9 +41,18 @@ void Filter2D(const ImageType &input, ImageType &output, int size,
     for (int j=0; j<cols, ++j) {
       // Perform the convolution
       float sum = 0;
+      Point sample;
       for (int k=0; k<size; ++k) {
         for (int l=0; l<size; ++l) {
-          sum += (float)input.getPixelVal(i+k-anchor.x,j+l-anchor.y)*kernel[k][l];/*HANDLE BOUNDARY CONDITION*/
+          // handle image bounds
+          sample.x = abs(i+k-anchor.x);
+          sample.y = abs(j+l-anchor.y);
+          if (sample.x >= cols)
+            sample.x = cols - cols % sample.x;
+          if (sample.y >= rows)
+            sample.y = rows - rows % sample.y;
+
+          sum += (float)input.getPixelVal(sample.x,sample.y)*kernel[k][l];
         }
       }
       output.setPixelVal(i,j,sum);
