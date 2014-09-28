@@ -72,4 +72,32 @@ void FlipKernel2D(float** kernel, int size) {
     }
   }
 }
+
+// Oredefined masks
+static const float** sobelx = {
+  {-1.0,-2.0,-1.0},
+  {0.0, 0.0, 0.0},
+  {1.0, 2.0, 1.0}
+}
+static const float** sobely = {
+  {-1.0, 0.0, 1.0},
+  {-2.0, 0.0, 2.0},
+  {-1.0, 0.0, 1.0}
+}
+static const float** prewittx = {
+  {-1.0,-1.0,-1.0},
+  {0.0, 0.0, 0.0},
+  {1.0, 1.0, 1.0}
+}
+static const float** prewitty = {
+  {-1.0, 0.0, 1.0},
+  {-1.0, 0.0, 1.0},
+  {-1.0, 0.0, 1.0}
+}
+static const float** laplacian = {
+  {0.0, 1.0, 0.0},
+  {1.0, -4.0, 1.0},
+  {0.0, 1.0, 0.0}
+}
+
 } // img_tools
