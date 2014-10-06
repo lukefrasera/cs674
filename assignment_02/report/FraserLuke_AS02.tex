@@ -25,6 +25,9 @@ This assignment is cnetered around the use of image filtering. Image filtering c
 Spatial filtering is used to perform many image processing operations. With spatial filtering you are able to smooth, sharpen. You can also find image derivatives use in edge detection. There are two central ways to perform filtering: convolution \& correlation. The two methods are very similar, but very slightly in their definition. The two methods are very useful image processing operators when analyzing image data.
 
 \subsection{Correlation}
+\begin{equation}
+ g(x,y)=w(x,y)*f(x,y)=\sum_{s=-\frac{K}{2}}^{\frac{K}{2}}\sum_{t=-\frac{K}{2}}^{\frac{K}{2}}w(s,t)f(x-s,y-t)
+\end{equation}
 \subsection{Smoothing}
 \subsection{Sharpening}
 
@@ -41,6 +44,12 @@ Spatial filtering is used to perform many image processing operations. With spat
 
 % Inverse Descrete Fourier transoform
 %f(x)=\frac{1}{N}\sum_{u=0}^{N-1}F(u)\mathrm{e}^\frac{j2\pi ux}{N}{}, x = 0,1,...,N-1
+
+% Forward 2D Descrete Fourier transform
+%F(u,v)=\frac{1}{N}\sum_{x=0}^{N-1}\sum_{y=0}^{N-1}f(x,y)\mathrm{e}^{-j2\pi\frac{ux+vy}{N}},(u,v) = 0,1,...,N-1
+
+% Inverse 2D Descrete Fourier transform
+%f(x,y)=\frac{1}{N}\sum_{u=0}^{N-1}\sum_{v=0}^{N-1}F(u,v)\mathrm{e}^{j2\pi\frac{ux+vy}{N}},(x,y) = 0,1,...,N-1
 
 % Convolution
 %g(x,y)=w(x,y)*f(x,y)=\sum_{s=-\frac{K}{2}}^{\frac{K}{2}}\sum_{t=-\frac{K}{2}}^{\frac{K}{2}}w(s,t)f(x-s,y-t)
