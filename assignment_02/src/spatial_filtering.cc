@@ -17,28 +17,28 @@
 //     You should have received a copy of the GNU General Public License
 //     along with cs674Class.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "include/spatial_filtering.h"
-
+#include "../include/spatial_filtering.h"
+#include <stdlib.h>
 namespace img_tools {
-void Convolution2D(const ImageType &input, ImageType &output, int mask_size,
+void Convolution2D(ImageType &input, ImageType &output, int mask_size,
     float** mask, Point anchor, int boundries) {
   FlipKernel2D(mask, mask_size);
   // anchor = /*new anchor position*/;
   Filter2D(input, output, mask_size, mask, anchor, boundries);
 }
 
-void Correlation2D(const ImageType &input, ImageType &output, int mask_size,
+void Correlation2D(ImageType &input, ImageType &output, int mask_size,
     float** mask, Point anchor, int boundries) {
   Filter2D(input, output, mask_size, mask, anchor, boundries);
 }
 
-void Filter2D(const ImageType &input, ImageType &output, int size,
+void Filter2D(ImageType &input, ImageType &output, int size,
     float** kernel, Point anchor, int boundries) {
   int rows, cols, levels;
   input.getImageInfo(rows, cols, levels);
   // For each pixel in the input image
-  for (int i = 0; i < rows, ++i) {
-    for (int j = 0; j < cols, ++j) {
+  for (int i = 0; i < rows; ++i) {
+    for (int j = 0; j < cols; ++j) {
       // Perform the convolution
       float sum = 0;
       Point sample;
@@ -52,8 +52,8 @@ void Filter2D(const ImageType &input, ImageType &output, int size,
           if (sample.y >= rows)
             sample.y = rows - rows % sample.y;
 
-          sum += static_cast<float>input.getPixelVal(sample.x, sample.y)
-            *kernel[k][l];
+          sum += static_cast<float>(input.getPixelVal(sample.x, sample.y))
+          * kernel[k][l];
         }
       }
       output.setPixelVal(i, j, sum);
@@ -62,12 +62,12 @@ void Filter2D(const ImageType &input, ImageType &output, int size,
 }
 void FlipKernel2D(float** kernel, int size) {
   float value[size][size];
-  for (int i = 0, i < size; ++i) {
+  for (int i = 0; i < size; ++i) {
     for (int j = 0; j < size; ++j) {
       value[size-i-1][size-j-1] = kernel[i][j];
     }
   }
-  for (int i = 0, i < size; ++i) {
+  for (int i = 0; i < size; ++i) {
     for (int j = 0; j < size; ++j) {
       kernel[i][j] = value[i][j];
     }
@@ -75,30 +75,29 @@ void FlipKernel2D(float** kernel, int size) {
 }
 
 // Oredefined masks
-static const float** staticobelx = {
+static const float sobelx[][3] = {
   {-1.0, -2.0, -1.0},
   {0.0, 0.0, 0.0},
-  {1.0, 2.0, 1.0}
-}
-static const float** sobely = {
+  {1.0, 2.0, 1.0},
+};
+static const float sobely[][3] = {
   {-1.0, 0.0, 1.0},
   {-2.0, 0.0, 2.0},
   {-1.0, 0.0, 1.0}
-}
-static const float** prewittx = {
+};
+static const float prewittx[][3] = {
   {-1.0, -1.0, -1.0},
   {0.0, 0.0, 0.0},
   {1.0, 1.0, 1.0}
-}
-static const float** prewitty = {
+};
+static const float prewitty[][3] = {
   {-1.0, 0.0, 1.0},
   {-1.0, 0.0, 1.0},
   {-1.0, 0.0, 1.0}
-}
-static const float** laplacian = {
+};
+static const float laplacian[][3] = {
   {0.0, 1.0, 0.0},
   {1.0, -4.0, 1.0},
   {0.0, 1.0, 0.0}
-}
-
+};
 }  // namespace img_tools

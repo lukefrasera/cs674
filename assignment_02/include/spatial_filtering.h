@@ -19,7 +19,7 @@
 
 #ifndef SPATIAL_FILTERING_H_
 #define SPATIAL_FILTERING_H_
-
+#include "image.h"
 namespace img_tools {
 enum Boundries {
   MIRROR=0,
@@ -30,12 +30,12 @@ struct Point {
   int x,y;
 };
 
-void Convolution2D(const ImageType &input, ImageType &output, int mask_size,
-    float** mask, int anchor, int boundries);
-void Correlation2D(const ImageType &input, ImageType &output, int mask_size,
-    float** mask, int anchor, int boundries);
-void Filter2D(const ImageType &input, ImageType &output, int size,
-    float** kernel, int anchor, int boundries);
+void Convolution2D(ImageType &input, ImageType &output, int mask_size,
+    float** mask, Point anchor, int boundries);
+void Correlation2D(ImageType &input, ImageType &output, int mask_size,
+    float** mask, Point anchor, int boundries);
+void Filter2D(ImageType &input, ImageType &output, int size,
+    float** kernel, Point anchor, int boundries);
 void FlipKernel2D(float** kernel, int size);
 }
 #endif // SPATIAL_FILTERING_H_
