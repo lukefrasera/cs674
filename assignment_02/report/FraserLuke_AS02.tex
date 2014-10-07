@@ -25,10 +25,21 @@ This assignment is cnetered around the use of image filtering. Image filtering c
 Spatial filtering is used to perform many image processing operations. With spatial filtering you are able to smooth, sharpen. You can also find image derivatives use in edge detection. There are two central ways to perform filtering: convolution \& correlation. The two methods are very similar, but very slightly in their definition. The two methods are very useful image processing operators when analyzing image data.
 
 \subsection{Correlation}
+Correlation is an operation similar to the convolution and in many cases takes the place of the convolution in its implementation. Correlation as seen in the eq.~\ref{eq:correlation} uses a mask to compute the correlation of a mask with a given image. As its name signifies Correlation is used to find where in an image a mask is similar to. A high response from the correlation method signifies that a mask is present in the image.
+
 \begin{equation}
- g(x,y)=w(x,y)*f(x,y)=\sum_{s=-\frac{K}{2}}^{\frac{K}{2}}\sum_{t=-\frac{K}{2}}^{\frac{K}{2}}w(s,t)f(x-s,y-t)
+g(x,y)=w(x,y)*f(x,y)=\sum_{s=-\frac{K}{2}}^{\frac{K}{2}}\sum_{t=-\frac{K}{2}}^{\frac{K}{2}}w(s,t)f(x+s,y+t)
+\label{eq:correlation}
+\caption{Discrete Correlation}
 \end{equation}
 \subsection{Smoothing}
+Smoothing is an important operation of image processing. It is one of the most common operations performed on images to either remove noise and or sharp features. Smoothing in the spatial domain is comparable to a low-pass filter in the frequency domain.
+\begin{equation}
+g(x,y)=w(x,y)*f(x,y)=\sum_{s=-\frac{K}{2}}^{\frac{K}{2}}\sum_{t=-\frac{K}{2}}^{\frac{K}{2}}w(s,t)f(x-s,y-t)
+\end{equation}
+\begin{equation}
+G_{\sigma}(x,y)=\frac{1}{2\pi \sigma^2}\mathrm{e}^{-\frac{x^2+y^2}{2\sigma^2}}
+\end{equation}
 \subsection{Sharpening}
 
 \section{Median Filtering}
