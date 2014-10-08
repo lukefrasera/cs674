@@ -39,15 +39,14 @@ Spatial filtering is used to perform many image processing operations. With spat
     \includegraphics[width=5cm]{images/correlation.png}
     \caption{Correlation Image.}
   \end{subfigure}
-  \label{fig:correlation}
+  \label{fig:correlations}
 \end{figure}
 
-Correlation is an operation similar to the convolution and in many cases takes the place of the convolution in its implementation. Correlation as seen in the eq.~\ref{eq:correlation} uses a mask to compute the correlation on given image. As its name signifies Correlation is used to find where in an image a mask is similar. A high response from the correlation method signifies that a mask is present in the image. In this assignment we experimented with correlation to visually see how it could be used to register patterns in an image. As seen in Figure~\ref{fig:correlation} the mask was correlated with the original image to produce the resulting correlation image. It can be seen that there are high intensity ares of the image that signify a good match with the mask pattern. A serious limitation of this method is that it is not invariant to scale or orientation of the different patterns in the image. Meaning that only the patterns exactly aligned and sized correctly will respond strongly as matches.
+Correlation is an operation similar to the convolution and in many cases takes the place of the convolution in its implementation. Correlation as seen in the eq.~\ref{eq:correlation} uses a mask to compute the correlation on given image. As its name signifies Correlation is used to find where in an image a mask is similar. A high response from the correlation method signifies that a mask is present in the image. In this assignment we experimented with correlation to visually see how it could be used to register patterns in an image. As seen in Figure~\ref{fig:correlations} the mask was correlated with the original image to produce the resulting correlation image. It can be seen that there are high intensity ares of the image that signify a good match with the mask pattern. A serious limitation of this method is that it is not invariant to scale or orientation of the different patterns in the image. Meaning that only the patterns exactly aligned and sized correctly will respond strongly as matches.
 
 \begin{equation}
 g(x,y)=w(x,y)*f(x,y)=\sum_{s=-\frac{K}{2}}^{\frac{K}{2}}\sum_{t=-\frac{K}{2}}^{\frac{K}{2}}w(s,t)f(x+s,y+t)
 \label{eq:correlation}
-\caption{Discrete Correlation}
 \end{equation}
 \subsection{Smoothing}
   \begin{figure}[hbtp]
@@ -69,11 +68,30 @@ g(x,y)=w(x,y)*f(x,y)=\sum_{s=-\frac{K}{2}}^{\frac{K}{2}}\sum_{t=-\frac{K}{2}}^{\
       \caption{Kernel: 15x15 Gaussian.}
     \end{subfigure}
     \caption{Image smoothing: A comparison between an average mask and a Gaussian mask.}
-    \label{fig:smoothing}
+    \label{fig:smoothinglenna}
   \end{figure}
-
-  of the most common operations performed on images to either remove noise and or sharpen features. Smoothing in the spatial domain is comparable to a low-pass filter in the frequency domain. eq~\ref{eq:convolution} shows the Gaussian distribution. The Gaussi
-Smoothing is an important operation of image processing. It is one an can be used to smooth images in a unbiased fashion. Where as square masks when convolved with an image tend to leave behind traces of their shape. A Gaussian mask will not present artifacts in an image.
+  \begin{figure}[hbtp]
+    \centering
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/smoothing_sf_gaussian_7.png}
+      \caption{Kernel: 7x7 Gaussian.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/smoothing_sf_average_7.png}
+      \caption{Kernel: 7x7 Average.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/smoothing_sf_gaussian_15.png}
+      \caption{Kernel: 15x15 Gaussian.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/smoothing_sf_average_15.png}
+      \caption{Kernel: 15x15 Gaussian.}
+    \end{subfigure}
+    \caption{Image smoothing: A comparison between an average mask and a Gaussian mask.}
+    \label{fig:smoothingsf}
+  \end{figure}
+Smoothing is one of the most common operations performed on images to either remove noise and or sharpen features. Smoothing in the spatial domain is comparable to a low-pass filter in the frequency domain. eq~\ref{eq:convolution} shows the Gaussian distribution. Gaussian Smoothing is an important operation of image processing. It is one an can be used to smooth images in a unbiased fashion. Where as square masks when convolved with an image tend to leave behind traces of their shape. A Gaussian mask will not present artifacts in an image. Figure~\ref{fig:smoothinglenna} \&~\ref{fig:smoothingsf} show a comparison between average masks and Gaussian masks at different kernel sizes.
 \begin{equation}
 g(x,y)=w(x,y)*f(x,y)=\sum_{s=-\frac{K}{2}}^{\frac{K}{2}}\sum_{t=-\frac{K}{2}}^{\frac{K}{2}}w(s,t)f(x-s,y-t)
 \label{eq:convolution}
@@ -117,7 +135,23 @@ G_{\sigma}(x,y)=\frac{1}{2\pi \sigma^2}\mathrm{e}^{-\frac{x^2+y^2}{2\sigma^2}}
     \caption{Image Sharpening: Lenna.pgm sharpened using different mask operators.}
     \label{fig:sharpensf}
   \end{figure}
+Sharpening is used in image processing to emphasize high contrast details. In the case of the examples shown here image derivatives are taken to find the high contrast area. The use of the Sobel and Prewitt masks simulate image derivative to find lines in the image in both the x and y direction of the image. After each mask is convolved with the image you obtain the image gradient in both the x and y direction. To display the image results you compute the gradient magnitude to get a single number that represents the strength of the gradient in both directions. Figures~\ref{fig:sharpenlenna} \&~\ref{fig:sharpensf} show examples of the gradient magnitude taken with the sobel and prewitt masks.
+
+The laplacian mask can also be used to find lines in images, but the line orientation is lost do to the method of the equation. The lapacian takes the second partial derivative in both directions of the image simultaneously. In the case of the Laplacian lines are located at the zero crossings in the resulting image. The results of all three masks are shown in Figures~\ref{fig:sharpenlenna} \&~\ref{fig:sharpensf}.
 \section{Median Filtering}
+\begin{figure}[hbtp]
+  \centering
+  \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/salt_lenna_30.png}
+      \caption{Salt \& Pepper: 30.}
+    \end{subfigure}
+     \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/salt_lenna_50.png}
+      \caption{Salt \& Pepper 50.}
+    \end{subfigure}
+    \caption{Salt \& Pepper Noise}
+\end{figure}
+
  \begin{figure}[hbtp]
     \centering
     \begin{subfigure}{4cm}
@@ -125,12 +159,12 @@ G_{\sigma}(x,y)=\frac{1}{2\pi \sigma^2}\mathrm{e}^{-\frac{x^2+y^2}{2\sigma^2}}
       \caption{Kernel: 7x7 Noise: 30.}
     \end{subfigure}
     \begin{subfigure}{4cm}
-      \includegraphics[width=4cm]{images/median_lenna_7_50.png}
-      \caption{Kernel: 7x7 Noise: 50.}
-    \end{subfigure}
-    \begin{subfigure}{4cm}
       \includegraphics[width=4cm]{images/median_lenna_15.png}
       \caption{Kernel: 15x15 Noise: 30.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/median_lenna_7_50.png}
+      \caption{Kernel: 7x7 Noise: 50.}
     \end{subfigure}
     \begin{subfigure}{4cm}
       \includegraphics[width=4cm]{images/median_lenna_15_50.png}
@@ -202,6 +236,7 @@ G_{\sigma}(x,y)=\frac{1}{2\pi \sigma^2}\mathrm{e}^{-\frac{x^2+y^2}{2\sigma^2}}
     \caption{Average Filtering: Boat.pgm.}
     \label{fig:averageboat}
   \end{figure}
+Median Filtering is a filtering operation that unlike convolution and correlation does not sum the results of the mask. In the case of a median filter each element of the mask window is sorted into an ordered list where the median of the list is taken and used in the image in place of the previous pixel value. This filter has interesting effects on images and is well suited to remove noise in images. In the case of this example the results of a median filter on salt and pepper noise is shown in Figures~\ref{fig:medianlenna},~\ref{fig:averagelenna},~\ref{fig:medianboat},~\ref{fig:averageboat}.
 \section{Unsharp Masking and High Boost Filtering}
   \begin{figure}[hbtp]
     \centering
@@ -216,7 +251,12 @@ G_{\sigma}(x,y)=\frac{1}{2\pi \sigma^2}\mathrm{e}^{-\frac{x^2+y^2}{2\sigma^2}}
     \caption{Unsharp Masking and High Boost Filtering.}
     \label{fig:unsharp}
   \end{figure}
-\section{Conclusion}
+The Unsharp High boost filtering is combines several filtered images together to produce useful results. Equation~\ref{eq:highboost} shows the method used to generate the image in figure~\ref{fig:unsharp}. The Unsharp image is multiplied by a constant to reincorporate a portion of the original image back into the highpass image. The Highpass image is generated by taking the original image and subtracting a low pass filtered version of the image. This will produce a sharper highpass image. These to features come together to produce the resulting image in figure~\ref{fig:unsharp}.
+\begin{equation}
+ Highboost = (A-1)HighPass + Original - LowPass
+ \label{eq:highboost}
+\end{equation}
+
 \end{document}
 
 % Math equtions
