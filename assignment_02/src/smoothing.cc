@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
     }
     for (int i = 0; i<size.x; ++i) {
       for (int j =0; j < size.y; ++j) {
-        mask[i][j] = 1;
+        mask[i][j] = 1.0f/49.0f;
       }
     }
     img_tools::Convolution2D(image, output, size, mask, anchor, 0);
@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
     }
     for (int i = 0; i<size.x; ++i) {
       for (int j =0; j < size.y; ++j) {
-        mask[i][j] = 1;
+        mask[i][j] = 1.0f/225.0f;
       }
     }
     img_tools::Convolution2D(image, output, size, mask, anchor, 0);

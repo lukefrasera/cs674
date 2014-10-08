@@ -18,14 +18,31 @@
 \maketitle
 
 \begin{abstract}
-This assignment is cnetered around the use of image filtering. Image filtering can bes used to perform many image processingoperations. The term filtering comes from signal processing in which there are low-pass, high-pass, band-pass, and band-reject filters. Each filter provides different image results. The use of these image filters has implications far beyond just blurring images. The use of filters allows for smoothing, sharpening, data recovery, image derivatives, and more. It is a useul tool to undersand when working with images in general.
+This assignment is centered around the use of image filtering. Image filtering can be used to perform many image processing operations. The term filtering comes from signal processing in which there are low-pass, high-pass, band-pass, and band-reject filters. Each filter provides different image results. The use of these image filters has implications far beyond just blurring images. The use of filters allows for smoothing, sharpening, data recovery, image derivatives, and much more. It is a useful tool to understand when working with images in general.
 \end{abstract}
 
 \section{Spatial Filtering}
-Spatial filtering is used to perform many image processing operations. With spatial filtering you are able to smooth, sharpen. You can also find image derivatives use in edge detection. There are two central ways to perform filtering: convolution \& correlation. The two methods are very similar, but very slightly in their definition. The two methods are very useful image processing operators when analyzing image data.
+Spatial filtering is used to perform many image processing operations. With spatial filtering you are able to perform filtering in relation to the frequency domain. You can also use image derivatives for edge detection. There are two central ways to perform filtering: convolution \& correlation. The two methods are very similar, but vary slightly in their definition. The two methods are very useful image processing operators when analyzing image data.	
 
 \subsection{Correlation}
-Correlation is an operation similar to the convolution and in many cases takes the place of the convolution in its implementation. Correlation as seen in the eq.~\ref{eq:correlation} uses a mask to compute the correlation of a mask with a given image. As its name signifies Correlation is used to find where in an image a mask is similar to. A high response from the correlation method signifies that a mask is present in the image.
+\begin{figure}[hbtp]
+  \centering
+  \begin{subfigure}{5cm}
+    \includegraphics[width=5cm]{images/Pattern.png}
+    \caption{Mask.}
+  \end{subfigure}
+  \begin{subfigure}{5cm}
+    \includegraphics[width=5cm]{images/Image.png}
+    \caption{Original Image.}
+  \end{subfigure}
+  \begin{subfigure}{5cm}
+    \includegraphics[width=5cm]{images/correlation.png}
+    \caption{Correlation Image.}
+  \end{subfigure}
+  \label{fig:correlation}
+\end{figure}
+
+Correlation is an operation similar to the convolution and in many cases takes the place of the convolution in its implementation. Correlation as seen in the eq.~\ref{eq:correlation} uses a mask to compute the correlation on given image. As its name signifies Correlation is used to find where in an image a mask is similar. A high response from the correlation method signifies that a mask is present in the image. In this assignment we experimented with correlation to visually see how it could be used to register patterns in an image. As seen in Figure~\ref{fig:correlation} the mask was correlated with the original image to produce the resulting correlation image. It can be seen that there are high intensity ares of the image that signify a good match with the mask pattern. A serious limitation of this method is that it is not invariant to scale or orientation of the different patterns in the image. Meaning that only the patterns exactly aligned and sized correctly will respond strongly as matches.
 
 \begin{equation}
 g(x,y)=w(x,y)*f(x,y)=\sum_{s=-\frac{K}{2}}^{\frac{K}{2}}\sum_{t=-\frac{K}{2}}^{\frac{K}{2}}w(s,t)f(x+s,y+t)
@@ -33,18 +50,172 @@ g(x,y)=w(x,y)*f(x,y)=\sum_{s=-\frac{K}{2}}^{\frac{K}{2}}\sum_{t=-\frac{K}{2}}^{\
 \caption{Discrete Correlation}
 \end{equation}
 \subsection{Smoothing}
-Smoothing is an important operation of image processing. It is one of the most common operations performed on images to either remove noise and or sharp features. Smoothing in the spatial domain is comparable to a low-pass filter in the frequency domain.
+  \begin{figure}[hbtp]
+    \centering
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/smoothing_gaussian_7.png}
+      \caption{Kernel: 7x7 Gaussian.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/smoothing_average_7.png}
+      \caption{Kernel: 7x7 Average.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/smoothing_gaussian_15.png}
+      \caption{Kernel: 15x15 Gaussian.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/smoothing_average_15.png}
+      \caption{Kernel: 15x15 Gaussian.}
+    \end{subfigure}
+    \caption{Image smoothing: A comparison between an average mask and a Gaussian mask.}
+    \label{fig:smoothing}
+  \end{figure}
+
+  of the most common operations performed on images to either remove noise and or sharpen features. Smoothing in the spatial domain is comparable to a low-pass filter in the frequency domain. eq~\ref{eq:convolution} shows the Gaussian distribution. The Gaussi
+Smoothing is an important operation of image processing. It is one an can be used to smooth images in a unbiased fashion. Where as square masks when convolved with an image tend to leave behind traces of their shape. A Gaussian mask will not present artifacts in an image.
 \begin{equation}
 g(x,y)=w(x,y)*f(x,y)=\sum_{s=-\frac{K}{2}}^{\frac{K}{2}}\sum_{t=-\frac{K}{2}}^{\frac{K}{2}}w(s,t)f(x-s,y-t)
+\label{eq:convolution}
 \end{equation}
 \begin{equation}
 G_{\sigma}(x,y)=\frac{1}{2\pi \sigma^2}\mathrm{e}^{-\frac{x^2+y^2}{2\sigma^2}}
+\label{eq:gaussian}
 \end{equation}
 \subsection{Sharpening}
-
+\begin{figure}[hbtp]
+    \centering
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/prewitt_lenna.png}
+      \caption{Prewitt Magnitude.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/sobel_lenna.png}
+      \caption{Sobel Magnitude.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/laplacian_lenna.png}
+      \caption{Laplacian Mask.}
+    \end{subfigure}
+    \caption{Image Sharpening: Lenna.pgm sharpened using different mask operators.}
+    \label{fig:sharpenlenna}
+  \end{figure}
+  \begin{figure}[hbtp]
+    \centering
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/prewitt_sf.png}
+      \caption{Prewitt Magnitude.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/sobel_sf.png}
+      \caption{Sobel Magnitude.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/laplacian_sf.png}
+      \caption{Laplacian Mask.}
+    \end{subfigure}
+    \caption{Image Sharpening: Lenna.pgm sharpened using different mask operators.}
+    \label{fig:sharpensf}
+  \end{figure}
 \section{Median Filtering}
+ \begin{figure}[hbtp]
+    \centering
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/median_lenna_7.png}
+      \caption{Kernel: 7x7 Noise: 30.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/median_lenna_7_50.png}
+      \caption{Kernel: 7x7 Noise: 50.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/median_lenna_15.png}
+      \caption{Kernel: 15x15 Noise: 30.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/median_lenna_15_50.png}
+      \caption{Kernel: 15x15 Noise: 50.}
+    \end{subfigure}
+    \caption{Median Filtering: Lenna.pgm.}
+    \label{fig:medianlenna}
+  \end{figure}
+   \begin{figure}[hbtp]
+    \centering
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/median_lenna_average_7_30.png}
+      \caption{Kernel: 7x7 Noise: 30.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/median_lenna_average_7_50.png}
+      \caption{Kernel: 7x7 Noise: 50.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/median_lenna_average_15_30.png}
+      \caption{Kernel: 15x15 Noise: 30.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/median_lenna_average_15_50.png}
+      \caption{Kernel: 15x15 Noise: 50.}
+    \end{subfigure}
+    \caption{Average Filtering: Lenna.pgm.}
+    \label{fig:averagelenna}
+  \end{figure}
+  \begin{figure}[hbtp]
+    \centering
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/median_boat_7.png}
+      \caption{Kernel: 7x7 Noise: 30.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/median_boat_7_50.png}
+      \caption{Kernel: 7x7 Noise: 50.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/median_boat_15.png}
+      \caption{Kernel: 15x15 Noise: 30.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/median_boat_15_50.png}
+      \caption{Kernel: 15x15 Noise: 50.}
+    \end{subfigure}
+    \caption{Median Filtering: Boat.pgm.}
+    \label{fig:medianboat}
+  \end{figure}
+   \begin{figure}[hbtp]
+    \centering
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/median_boat_average_7_30.png}
+      \caption{Kernel: 7x7 Noise: 30.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/median_boat_average_7_50.png}
+      \caption{Kernel: 7x7 Noise: 50.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/median_boat_average_15_30.png}
+      \caption{Kernel: 15x15 Noise: 30.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/median_boat_average_15_50.png}
+      \caption{Kernel: 15x15 Noise: 50.}
+    \end{subfigure}
+    \caption{Average Filtering: Boat.pgm.}
+    \label{fig:averageboat}
+  \end{figure}
 \section{Unsharp Masking and High Boost Filtering}
-
+  \begin{figure}[hbtp]
+    \centering
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/unsharp_highboost_f16_1-1.png}
+      \caption{A=1.1}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/unsharp_highboost_lenna_1-3.png}
+      \caption{A=1.3}
+    \end{subfigure}
+    \caption{Unsharp Masking and High Boost Filtering.}
+    \label{fig:unsharp}
+  \end{figure}
 \section{Conclusion}
 \end{document}
 

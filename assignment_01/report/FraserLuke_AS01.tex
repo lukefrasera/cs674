@@ -24,48 +24,48 @@ In this assignment we were tasked with implementing several image processing too
 Each of the four exercises will be contained in its own section. Each section will review the material as well as the method implemented for each image processing technique. Results will be displayed as images to help aid in the review of each method.
 
 \section{Image Sampling}
-\begin{figure}[hbtp]
-  \centering
-  \begin{subfigure}{4cm}
-    \includegraphics[width=4cm]{images/lenna.png}
-    \caption{Original: 256x256.}
-  \end{subfigure}
-  \begin{subfigure}{4cm}
-    \includegraphics[width=4cm]{images/lenna_subsample128.png}
-    \caption{Half: 128x128.}
-  \end{subfigure}
-  \begin{subfigure}{4cm}
-    \includegraphics[width=4cm]{images/lenna_subsample64.png}
-    \caption{Quarter: 64x64.}
-  \end{subfigure}
-  \begin{subfigure}{4cm}
-    \includegraphics[width=4cm]{images/lenna_subsample32.png}
-    \caption{Eighth: 32x32.}
-  \end{subfigure}
-  \caption{Image Sampling at multiple levels: lenna.pgm.}
-  \label{fig:samplelenna}
-\end{figure}
-\begin{figure}[hbtp]
-  \centering
-  \begin{subfigure}{4cm}
-    \includegraphics[width=4cm]{images/peppers.png}
-    \caption{Original: 256x256.}
-  \end{subfigure}
-  \begin{subfigure}{4cm}
-    \includegraphics[width=4cm]{images/peppers_subsample128.png}
-    \caption{Half: 128x128.}
-  \end{subfigure}
-  \begin{subfigure}{4cm}
-    \includegraphics[width=4cm]{images/peppers_subsample64.png}
-    \caption{Quarter: 64x64.}
-  \end{subfigure}
-  \begin{subfigure}{4cm}
-    \includegraphics[width=4cm]{images/peppers_subsample32.png}
-    \caption{Eighth: 32x32.}
-  \end{subfigure}
-  \caption{Image Sampling at multiple levels: peppers.pgm.}
-  \label{fig:samplepeppers}
-\end{figure}
+  \begin{figure}[hbtp]
+    \centering
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/lenna.png}
+      \caption{Original: 256x256.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/lenna_subsample128.png}
+      \caption{Half: 128x128.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/lenna_subsample64.png}
+      \caption{Quarter: 64x64.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/lenna_subsample32.png}
+      \caption{Eighth: 32x32.}
+    \end{subfigure}
+    \caption{Image Sampling at multiple levels: lenna.pgm.}
+    \label{fig:samplelenna}
+  \end{figure}
+  \begin{figure}[hbtp]
+    \centering
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/peppers.png}
+      \caption{Original: 256x256.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/peppers_subsample128.png}
+      \caption{Half: 128x128.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/peppers_subsample64.png}
+      \caption{Quarter: 64x64.}
+    \end{subfigure}
+    \begin{subfigure}{4cm}
+      \includegraphics[width=4cm]{images/peppers_subsample32.png}
+      \caption{Eighth: 32x32.}
+    \end{subfigure}
+    \caption{Image Sampling at multiple levels: peppers.pgm.}
+    \label{fig:samplepeppers}
+  \end{figure}
 
 Image sampling takes several samples of an image to build a lower or higher resolution image from the original image. Different methods exist for both down sampling as well as up sampling. In the case of this assignment only down sampling was performed. The images in Figures~\ref{fig:samplelenna} \&~\ref{fig:samplepeppers} illustrate the result of down sampling images at different levels. Each level of sampling visually shows the degradation in the image. The method very simple. No attempt at interpolation or averaging is taken into account. The top left most pixel in a given region is the only pixel that contributes to the down sampled image. The example code below provides a general view of the algorithm used to implement image sampling.
 
