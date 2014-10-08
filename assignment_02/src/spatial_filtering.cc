@@ -19,20 +19,23 @@
 
 #include "../include/spatial_filtering.h"
 #include <stdlib.h>
+#include <stdio.h>
+#include <vector>
+#include <algorithm>
 namespace img_tools {
-void Convolution2D(ImageType &input, ImageType &output, int mask_size,
+void Convolution2D(ImageType &input, ImageType &output, Point mask_size,
     float** mask, Point anchor, int boundries) {
   FlipKernel2D(mask, mask_size);
   // anchor = /*new anchor position*/;
   Filter2D(input, output, mask_size, mask, anchor, boundries);
 }
 
-void Correlation2D(ImageType &input, ImageType &output, int mask_size,
+void Correlation2D(ImageType &input, ImageType &output, Point mask_size,
     float** mask, Point anchor, int boundries) {
   Filter2D(input, output, mask_size, mask, anchor, boundries);
 }
 
-void Filter2D(ImageType &input, ImageType &output, int size,
+void Filter2D(ImageType &input, ImageType &output, Point size,
     float** kernel, Point anchor, int boundries) {
   int rows, cols, levels;
   input.getImageInfo(rows, cols, levels);
@@ -42,62 +45,101 @@ void Filter2D(ImageType &input, ImageType &output, int size,
       // Perform the convolution
       float sum = 0;
       Point sample;
-      for (int k = 0; k < size; ++k) {
-        for (int l = 0; l < size; ++l) {
+      for (int k = 0; k < size.x; ++k) {
+        for (int l = 0; l < size.y; ++l) {
           // handle image bounds
           sample.x = abs(i + k - anchor.x);
           sample.y = abs(j + l - anchor.y);
-          if (sample.x >= cols)
-            sample.x = cols - cols % sample.x;
-          if (sample.y >= rows)
-            sample.y = rows - rows % sample.y;
-
-          sum += static_cast<float>(input.getPixelVal(sample.x, sample.y))
-          * kernel[k][l];
+          if (sample.x >= rows)
+            sample.x = rows-1 - sample.x % rows;
+          if (sample.y >= cols)
+            sample.y = cols-1 - sample.y % cols;
+          sum += static_cast<float>(input.getPixelVal(sample.x, sample.y)) * kernel[k][l];
         }
       }
       output.setPixelVal(i, j, sum);
+      // printf("Sum: %f\n", sum);
     }
   }
 }
-void FlipKernel2D(float** kernel, int size) {
-  float value[size][size];
-  for (int i = 0; i < size; ++i) {
-    for (int j = 0; j < size; ++j) {
-      value[size-i-1][size-j-1] = kernel[i][j];
+
+void MedianFilter(ImageType &input, ImageType &output, Point size, Point anchor, int boundries) {
+  int rows, cols, levels;
+  input.getImageInfo(rows, cols, levels);
+  // For each pixel in the input image
+  for (int i = 0; i < rows; ++i) {
+    for (int j = 0; j < cols; ++j) {
+      // Perform the convolution
+      std::vector<int> values;
+      Point sample;
+      for (int k = 0; k < size.x; ++k) {
+        for (int l = 0; l < size.y; ++l) {
+          // handle image bounds
+          sample.x = abs(i + k - anchor.x);
+          sample.y = abs(j + l - anchor.y);
+          if (sample.x >= rows)
+            sample.x = rows-1 - sample.x % rows;
+          if (sample.y >= cols)
+            sample.y = cols-1 - sample.y % cols;
+          values.push_back(input.getPixelVal(sample.x, sample.y));
+        }
+      }
+      // sort values
+      std::sort(values.begin(), values.end());
+      output.setPixelVal(i, j, values[values.size()/2]);
+      values.clear();
     }
   }
-  for (int i = 0; i < size; ++i) {
-    for (int j = 0; j < size; ++j) {
+}
+
+void FlipKernel2D(float** kernel, Point size) {
+  float value[size.x][size.y];
+  for (int i = 0; i < size.x; ++i) {
+    for (int j = 0; j < size.y; ++j) {
+      value[size.x-i-1][size.y-j-1] = kernel[i][j];
+    }
+  }
+  for (int i = 0; i < size.x; ++i) {
+    for (int j = 0; j < size.y; ++j) {
       kernel[i][j] = value[i][j];
     }
   }
 }
 
-// Oredefined masks
-static const float sobelx[][3] = {
-  {-1.0, -2.0, -1.0},
-  {0.0, 0.0, 0.0},
-  {1.0, 2.0, 1.0},
-};
-static const float sobely[][3] = {
-  {-1.0, 0.0, 1.0},
-  {-2.0, 0.0, 2.0},
-  {-1.0, 0.0, 1.0}
-};
-static const float prewittx[][3] = {
-  {-1.0, -1.0, -1.0},
-  {0.0, 0.0, 0.0},
-  {1.0, 1.0, 1.0}
-};
-static const float prewitty[][3] = {
-  {-1.0, 0.0, 1.0},
-  {-1.0, 0.0, 1.0},
-  {-1.0, 0.0, 1.0}
-};
-static const float laplacian[][3] = {
-  {0.0, 1.0, 0.0},
-  {1.0, -4.0, 1.0},
-  {0.0, 1.0, 0.0}
-};
+void ReMap( ImageType &image) {
+  int rows, cols, levels;
+  image.getImageInfo(rows, cols, levels);
+  int min=255, max=0;
+  for (int i =0; i<rows; ++i) {
+    for (int j = 0; j<cols; ++j) {
+      int pixelval = image.getPixelVal(i,j);
+      if (min > pixelval) {min = pixelval;};
+      if (max < pixelval) {max = pixelval;};
+    }
+  }
+  // compute remap values
+  float scale_factor = 255.0f/(max - min);
+  float shift_factor = -scale_factor*static_cast<float>(min);
+
+  for (int i = 0; i<rows; ++i) {
+    for (int j = 0; j<cols; ++j) {
+      image.setPixelVal(i,j, scale_factor * image.getPixelVal(i,j) + shift_factor);
+    }
+  }
+}
+
+void ImageToMask(ImageType image, float** mask) {
+  int rows, cols, levels;
+
+  image.getImageInfo(rows, cols, levels);
+  for (int i = 0; i < rows; ++i) {
+    for (int j = 0; j < cols; ++j) {
+      mask[i][j] = 1.0f/((static_cast<float>(image.getPixelVal(i,j)) * static_cast<float>(rows*cols))) * 1000;
+      if (image.getPixelVal(i,j)==0) {
+        mask[i][j] = 0;
+      }
+      // printf("Mask: %f\n", mask[i][j]);
+    }
+  }
+}
 }  // namespace img_tools
