@@ -7,3 +7,9 @@ include_directories(
 #  src/sample.cpp
 #  ${image_HEADERS}
 #)
+
+ADD_EXECUTABLE( experiment_1
+  src/experiment1.cc
+  src/fft.cc
+  ${image_HEADERS}
+)

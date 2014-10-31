@@ -20,3 +20,4 @@ SET(image_HEADERS
 ADD_SUBDIRECTORY(threshold_example)
 ADD_SUBDIRECTORY(assignment_01)
 ADD_SUBDIRECTORY(assignment_02)
+ADD_SUBDIRECTORY(assignment_03)
