@@ -18,13 +18,80 @@
 //    along with cs674Class.  If not, see <http://www.gnu.org/licenses/>.
 #include "fft.h"
 #include <stdio.h>
+#include <complex>
+#include <math.h>
+
+#define PI 3.14159265359
 
 int main(int argc, char *argv[]) {
   float  f_1d[] = {0, 1, 0, 2, 0, 4, 0, 4, 0};
-  fft(f_1d, 8, -1);
-  // fft(f, 8,   1);
-  // for (int i = 1; i < 9 ; ++i)
-    // printf("Image: %f\n", f[i]);
-  printf("Hello\n");
+
+  // Center Spektrum
+  for (int i = 0; i < 4; ++i) {
+    if ((i+1)%2)
+      f_1d[2*i+1] *= -1;
+  }
+
+  // Perfrom Forward Transform
+  fft(f_1d, 4, -1);
+
+  // Display Result
+  for (int i = 0; i < 4 ; ++i) {
+    printf("F(%d)_real: %f\n", i+1, f_1d[2*i+1]);
+    printf("F(%d)_imag: %f\n", i+1, f_1d[2*i+2]);
+  }
+  printf("\n");
+
+  // Perfrom Complex Devision // This could be done after to reduce computation
+  std::complex<float> complex_num;
+  for (int i = 1; i < 9; i += 2) {
+    complex_num = std::complex<float>(f_1d[i], f_1d[i+1]);
+    complex_num /= 4;
+    f_1d[i] = complex_num.real();
+    f_1d[i+1] = complex_num.imag();
+  }
+
+  // Perfrom Inverse Transfrom
+  fft(f_1d, 4, 1);
+
+  // Negate Center Spektrum components
+  for (int i = 0; i < 4; ++i) {
+    if ((i+1)%2)
+      f_1d[2*i+1] *= -1;
+  }
+
+  for (int i = 0; i < 4 ; ++i) {
+    printf("F(%d)_real: %f\n", i+1, f_1d[2*i+1]);
+    printf("F(%d)_imag: %f\n", i+1, f_1d[2*i+2]);
+  }
+  printf("\n");
+
+  // Sample Cosine Function
+  printf("Cosine Sample\n");
+  float f_cos[257];
+  for (int i = 0; i < 128; ++i) {
+    f_cos[2*i+1] = cos(2.0*PI*8.0*(float)(i+1)/128.0);
+    f_cos[2*i+2] = 0;
+  }
+
+  // Center Spektrum
+  for (int i = 0; i < 128; ++i) {
+    if ((i+1)%2)
+      f_cos[2*i+1] *= -1;
+  }
+
+  // Perfrom Forward Transform
+  fft(f_cos, 128, -1);
+
+  for (int i = 1; i < 257; i += 2) {
+    complex_num = std::complex<float>(f_cos[i], f_cos[i+1]);
+    complex_num /= 128.0;
+    f_cos[i] = complex_num.real();
+    f_cos[i+1] = complex_num.imag();
+  }
+  for (int i = 0; i < 128 ; ++i) {
+    printf("F(%d)_real: %f\n", i+1, f_cos[2*i+1]);
+    printf("F(%d)_imag: %f\n", i+1, f_cos[2*i+2]);
+  }
   return 0;
 }

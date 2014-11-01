@@ -1,4 +1,4 @@
-//"fft_tools.h"
+//"experiment1.cc"
 //
 //  Copyright (c) Luke Fraser 2014
 //
@@ -15,10 +15,31 @@
 //    GNU General Public License for more details.
 //
 //    You should have received a copy of the GNU General Public License
-//    along with cs674Class.  If not, see <http://www.gnu.org/licenses/>
+//    along with cs674Class.  If not, see <http://www.gnu.org/licenses/>.
+#include "fft.h"
+#include <stdio.h>
+#include <complex>
+#include <math.h>
 
-#include "image.h"
+#define PI 3.14159265359
 
-namespace img_tools {
-fft2D(int N, int M, float ** real_fuv, float ** imag_fuv, int isign);
-} // namespace img_tools
+int main(int argc, char *argv[]) {
+  // import image
+
+  // Transfer to floating point
+
+  // Set imaginery numbers to 0
+
+  // Center Spektrum
+
+  // compute 2D tranform
+  img_tools::fft2D(M, N, image_real, image_imag, -1);
+
+  // Perfrom complex division
+
+  // computer inverse tranform
+  img_tools::fft2D(M, N, image,_real, image_imag, 1);
+
+  // save image to disk
+  return 0;
+}

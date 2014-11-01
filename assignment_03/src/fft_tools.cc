@@ -20,4 +20,43 @@
 #include <stdio.h>
 // Inlcude Project Soecific
 #include "fft_tools.h"
-#include "fft.h"
+#include "fft.h" 
+
+namespace img_tools {
+fft2D(int N, int M, float ** real_fuv, float ** imag_fuv, int isign) {
+  float * strip = new float[2*N+1];
+  if (N == M) {
+    for (int i = 0; i < N; ++i) {
+      for (int j = 0; j < N; ++j) {
+        // Build the strip
+        strip[2*j+1] = real_fuv[i][j];
+        strip[2*j+2] = imag_fuv[i][j];
+      }
+      // compute the forurier transform of the strip
+      fft(strip, N, isign);
+      for (int j = 0; j < N; ++j) {
+        // copy strip back to pointers
+        real_fuv[i][j] = strip[2*j+1];
+        imag_fuv[i][j] = strip[2*j+2];
+      }
+    }
+
+    // compute transform of columns
+    for (int j = 0; j < N; ++j) {
+      for (int i = 0; i < N; ++i) {
+        // Build the strip
+        strip[2*i+1] = real_fuv[i][j];
+        strip[2*i+2] = imag_fuv[i][j];
+      }
+      fft(strip, N, isign);
+      for (int i = 0; i < N; ++i) {
+        // copy strip back to pointers
+        real_fuv[i][j] = strip[2*i+1];
+        imag_fuv[i][j] = strip[2*i+2];
+      }
+    }
+  } else {
+    printf("Image Width and Height are not Equal: M:%d, N:%d\n", M, N);
+  }
+}
+} // namespace img_tools
