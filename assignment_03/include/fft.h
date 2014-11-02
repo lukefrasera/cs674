@@ -22,7 +22,6 @@
 #include <math.h>
 #ifndef FFT_SOURCE
 #define FFT_SOURCE
-
 void fft(float data[], unsigned long nn, int isign);
 /* (C) Copr. 1986-92 Numerical Recipes Software 0#Y". */
 #endif

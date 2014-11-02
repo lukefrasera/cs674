@@ -20,5 +20,5 @@
 #include "image.h"
 
 namespace img_tools {
-fft2D(int N, int M, float ** real_fuv, float ** imag_fuv, int isign);
+void fft2D(int N, int M, float ** real_fuv, float ** imag_fuv, int isign);
 } // namespace img_tools

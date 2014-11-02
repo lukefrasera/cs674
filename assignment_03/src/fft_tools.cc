@@ -23,7 +23,7 @@
 #include "fft.h" 
 
 namespace img_tools {
-fft2D(int N, int M, float ** real_fuv, float ** imag_fuv, int isign) {
+void fft2D(int N, int M, float ** real_fuv, float ** imag_fuv, int isign) {
   float * strip = new float[2*N+1];
   if (N == M) {
     for (int i = 0; i < N; ++i) {
@@ -32,6 +32,7 @@ fft2D(int N, int M, float ** real_fuv, float ** imag_fuv, int isign) {
         strip[2*j+1] = real_fuv[i][j];
         strip[2*j+2] = imag_fuv[i][j];
       }
+
       // compute the forurier transform of the strip
       fft(strip, N, isign);
       for (int j = 0; j < N; ++j) {
@@ -48,6 +49,10 @@ fft2D(int N, int M, float ** real_fuv, float ** imag_fuv, int isign) {
         strip[2*i+1] = real_fuv[i][j];
         strip[2*i+2] = imag_fuv[i][j];
       }
+      for ( int k = 0; k < 2*N+1; ++k) {
+        printf("Strip:%f\n", strip[k]);
+      }
+      printf("\n");
       fft(strip, N, isign);
       for (int i = 0; i < N; ++i) {
         // copy strip back to pointers
