@@ -24,9 +24,35 @@ In this experiment we explore the use of the 1D FFT implementation provided in t
 \subsection{Part A}
 Part A consists performing the FFT on a descrete function $f(x) = [1, 2, 4, 4]$. This preliminary experiment shows that we able to perfrom the FFT and return from the frequency domain and recover the original data set. In order to the use the FFT implimentation provided the data must be preprocessed in order to produce correct results. The data must first be supplied to the function as a one dimensional array of floating point values. The data must also start from position one in the array. This is contrary to standard ''C'' arrays which start at zero. As well the data must presented with its complex component inerleaved with the real component so that the structure of the array is as follows: $$[zero~position, real, imaginary, real, imaginary, real, ..., imaginary]$$ After the data is in the proper format to be fed to the FFT function the spektrum must be centered prior to performing the DFT so that a full period is in view in the result of the function. Good results were seen from the results of the FFT and the function $f(x)$ was able to go from the frequency domain and resturn with the same values.
 \subsection{Part B}
-Part B evalutaes the FT of a cosine function with a single frequency: $f(x) = cos(2 \pi u x / N)$. This function has 128 samples and cycles 8 times over the duration of the samples. The FT of the function is represented by two delta functions, one the reflection of the other across the y axis. The frequency of the function is 8 and the two delta functions are seen at positive 8 and negative 8 in the frequency domain. The value of the FT comes from the strength of the signal. This is the expected result from the FFT funtion. 
+Part B evalutaes the FT of a cosine function with a single frequency: $f(x) = cos(2 \pi u x / N)$. This function has 128 samples and cycles 8 times over the duration of the samples. The FT of the function is represented by two delta functions, one the reflection of the other across the y axis. The frequency of the function is 8 and the two delta functions are seen at positive 8 and negative 8 in the frequency domain. The value of the FT comes from the strength of the signal. This is the expected result from the FFT funtion.
+\begin{figure}[hbtp]
+  \centering
+  \begin{subfigure}{8cm}
+    \includegraphics[width=8cm]{images/cosine_plot_time.png}
+    \caption{Spatial Domain.}
+  \end{subfigure}
+  \begin{subfigure}{8cm}
+    \includegraphics[width=8cm]{images/cosine_plot.png}
+    \caption{Fourier Transform.}
+  \end{subfigure}
+  \caption{Fourier transform of $f(x)=cos(2\pi 8x/N)$.}
+  \label{fig:ft_cos}
+\end{figure}
 \subsection{Part C}
 Part C shows the FT of the descrete reactangle function. This is an important FT to perform because it shows how the FT of a Rectangle function produces the sinc function in the frequency domain. In the case of this experiment the FFT is performed 128 samples of a Rect function. The function is represented as follows: $$f(x) = \left \{ \begin{array}{l l} 1 & \quad \text{if $33 \leq x \leq 96$}\\ 0 & \quad \text{Otherwise}\end{array} \right.$$
+\begin{figure}[hbtp]
+  \centering
+  \begin{subfigure}{8cm}
+    \includegraphics[width=8cm]{images/function_rect.png}
+    \caption{Spatial Domain.}
+  \end{subfigure}
+  \begin{subfigure}{8cm}
+    \includegraphics[width=8cm]{images/sincl_plot.png}
+    \caption{Fourier Transform.}
+  \end{subfigure}
+  \caption{Fourier transform of 1D rectangle function.}
+  \label{fig:ft_cos}
+\end{figure}
 \section{Experiment 2}
 In this experiment we impliment a 2D DFT from the 1D FFT used in the previous experiment. The 2D FFT is then used on different images to produce different 2D spektrums in the frequency domain. Tests are performed to see the issues of not shifting the spektrum to the center of the image. This experiment evaluates the importance of obtaining a full period in the frequency domain.
 \subsection{Part A}
@@ -107,7 +133,23 @@ In part A the importance of the phase coponent is tested. The phase component in
   \label{fig:ft_mag}
 \end{figure}
 \subsection{Part B}
-In part A the importance of the magnitude component is tested. The magnitude component in the frequency domain is set to one prior to the inverse tranform.
+In part A the importance of the magnitude component is tested. The magnitude component in the frequency domain is set to one prior to the inverse tranform. In order to set the magnitue to one a property of Euler's formula is used.
+\begin{equation}
+\mathrm{e}^{\pm j\theta} = cos(\theta) \pm j sin(\theta)
+\end{equation}
+The property gives a formula to set the magnitude to one:
+\begin{equation}
+|\mathrm{e}^{\pm j\theta}| = \sqrt{cos^{2}(\theta) \pm sin^{2}(\theta)} = 1
+\label{eq:mag}
+\end{equation}
+Using this formula the magnitude in the frequency domain can be set to one. All you need is to recover the phase component from the frequency domain value. The phase component can be extracted using equation~\ref{eq:phase}.
+\begin{equation}
+ \theta = tan^{-1}(b/a)
+ \label{eq:phase}
+\end{equation}
+$\theta$ is the phase component of the complex number represented by the inverse tangent of $b$ and $a$, where is $b$ is the imaginary portion of the number and $a$ is the real portion. Using equations~\ref{eq:phase} and~\ref{eq:mag} the magnitude of the frequency domain can be set to one, thus removing the effects of the magnitude component from the image.
+
+
 
 \begin{figure}[hbtp]
   \centering
