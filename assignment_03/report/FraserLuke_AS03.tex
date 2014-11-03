@@ -16,15 +16,24 @@
 \maketitle
 
 \begin{abstract}
-In this assignment the use of the FFT (Fast Fourier Transofrm) is tested and analyzed to show its capabilties on different types of data. As well the theoretical aspects that were proven and understood in class are shown to appear in the experiemtnal results as well. The use of the Fourier Transform is far reaching and allows for a faster solution of the convolution in special cases. As well all of the experiments in this paper are implimented with the 1D FFT to show that a 2D FT can be computed through the use of a 1D FT.
+In this assignment the use of the FFT (Fast Fourier Transform) is tested and analyzed to show its capabilities on different types of data. As well the theoretical aspects that were proven and understood in class are shown to appear in the experimental results. The use of the Fourier Transform is far reaching and allows for a faster solution of the convolution in special cases. As well all of the experiments in this paper are implemented with the 1D FFT to show that a 2D FT can be computed through the use of a 1D FT. This proves the separability principal of the the DFT.
 \end{abstract}
 
 \section{Experiment 1}
-In this experiment we explore the use of the 1D FFT implementation provided in the ``fft.c'' code. The 1D FFT is an algorithm that performs a Descrete Fourier Transform (DFT). The FFT is an optimized implimentation of the DFT that has a running time O(NLog(N)).
+In this experiment we explore the use of the 1D FFT implementation provided in the ``fft.c'' code. The 1D FFT is an algorithm that performs a Discrete Fourier Transform (DFT). It is an optimized implementation of the DFT that has a running time $O(N^{2}Log(N))$.
 \subsection{Part A}
-Part A consists performing the FFT on a descrete function $f(x) = [1, 2, 4, 4]$. This preliminary experiment shows that we able to perfrom the FFT and return from the frequency domain and recover the original data set. In order to the use the FFT implimentation provided the data must be preprocessed in order to produce correct results. The data must first be supplied to the function as a one dimensional array of floating point values. The data must also start from position one in the array. This is contrary to standard ''C'' arrays which start at zero. As well the data must presented with its complex component inerleaved with the real component so that the structure of the array is as follows: $$[zero~position, real, imaginary, real, imaginary, real, ..., imaginary]$$ After the data is in the proper format to be fed to the FFT function the spektrum must be centered prior to performing the DFT so that a full period is in view in the result of the function. Good results were seen from the results of the FFT and the function $f(x)$ was able to go from the frequency domain and resturn with the same values.
+\begin{figure}[hbtp]
+  \centering
+  \begin{subfigure}{8cm}
+    \includegraphics[width=8cm]{images/function_f.png}
+    \caption{Fourier Transform.}
+  \end{subfigure}
+  \caption{Fourier transform of $f(x)=[1,2,4,4]$.}
+  \label{fig:ft_f}
+\end{figure}
+Part A consists of performing the FFT on a discrete function $f(x) = [1, 2, 4, 4]$. This preliminary experiment shows that you able to perform the FFT and return from the frequency domain and recover the original data set. In order to the use the FFT implementation provided the data must be preprocessed in order to produce correct results. The data must first be supplied to the function as a one dimensional array of floating point values. The data must also start from position one in the array. This is contrary to standard ''C'' arrays which start at zero. As well the data must be presented with its complex component interleaved with the real component so that the structure of the array is as follows: $$[zero~position, real, imaginary, real, imaginary, real, ..., imaginary]$$ After the data is in the proper format to be fed to the FFT function, the spectrum must be centered prior to performing the DFT so that a full period is in view in the result of the function. Good results were seen from the results of the FFT and the function $f(x)$ was able to go to the frequency domain and return with the same values.
 \subsection{Part B}
-Part B evalutaes the FT of a cosine function with a single frequency: $f(x) = cos(2 \pi u x / N)$. This function has 128 samples and cycles 8 times over the duration of the samples. The FT of the function is represented by two delta functions, one the reflection of the other across the y axis. The frequency of the function is 8 and the two delta functions are seen at positive 8 and negative 8 in the frequency domain. The value of the FT comes from the strength of the signal. This is the expected result from the FFT funtion.
+Part B evaluates the FT of a cosine function with a single frequency: $f(x) = cos(2 \pi u x / N)$. This function has 128 samples and cycles 8 times over the duration of the samples. The FT of the function is represented by two delta functions, one the reflection of the other across the y axis. The frequency of the function is 8 and the two delta functions are seen at positive 8 and negative 8 in the frequency domain. The value of the FT comes from the strength of the signal and the phase. This is the expected result from the FFT function.
 \begin{figure}[hbtp]
   \centering
   \begin{subfigure}{8cm}
@@ -32,14 +41,13 @@ Part B evalutaes the FT of a cosine function with a single frequency: $f(x) = co
     \caption{Spatial Domain.}
   \end{subfigure}
   \begin{subfigure}{8cm}
-    \includegraphics[width=8cm]{images/cosine_plot.png}
+    \includegraphics[width=8cm]{images/function_cosine_plot.png}
     \caption{Fourier Transform.}
   \end{subfigure}
   \caption{Fourier transform of $f(x)=cos(2\pi 8x/N)$.}
   \label{fig:ft_cos}
 \end{figure}
 \subsection{Part C}
-Part C shows the FT of the descrete reactangle function. This is an important FT to perform because it shows how the FT of a Rectangle function produces the sinc function in the frequency domain. In the case of this experiment the FFT is performed 128 samples of a Rect function. The function is represented as follows: $$f(x) = \left \{ \begin{array}{l l} 1 & \quad \text{if $33 \leq x \leq 96$}\\ 0 & \quad \text{Otherwise}\end{array} \right.$$
 \begin{figure}[hbtp]
   \centering
   \begin{subfigure}{8cm}
@@ -47,14 +55,17 @@ Part C shows the FT of the descrete reactangle function. This is an important FT
     \caption{Spatial Domain.}
   \end{subfigure}
   \begin{subfigure}{8cm}
-    \includegraphics[width=8cm]{images/sincl_plot.png}
+    \includegraphics[width=8cm]{images/function_rect_plot.png}
     \caption{Fourier Transform.}
   \end{subfigure}
   \caption{Fourier transform of 1D rectangle function.}
-  \label{fig:ft_cos}
+  \label{fig:ft_rect}
 \end{figure}
+Part C shows the FT of the discrete rectangle function. This is an important FT to perform because it shows how the FT of a Rectangle function produces the sinc function in the frequency domain. In the case of this experiment the FFT is performed on 128 samples of a Rect function. The function is represented as follows: $$f(x) = \left \{ \begin{array}{l l} 1 & \quad \text{if $33 \leq x \leq 96$}\\ 0 & \quad \text{Otherwise}\end{array} \right.$$
+
+When the FT is taken of a rectangular function the expected result is the sinc function in the frequency domain. The results of the FT on the discrete rectangle function can be seen in figure~\ref{fig:ft_rect}. The sinc function was generated by 128 samples of a rectangular function.
 \section{Experiment 2}
-In this experiment we impliment a 2D DFT from the 1D FFT used in the previous experiment. The 2D FFT is then used on different images to produce different 2D spektrums in the frequency domain. Tests are performed to see the issues of not shifting the spektrum to the center of the image. This experiment evaluates the importance of obtaining a full period in the frequency domain.
+In this experiment we implement a 2D DFT from the 1D FFT used in the previous experiment. The 2D FFT is then used on different images to produce different 2D spectrums in the frequency domain. Tests are performed to see the issues of not shifting the spectrum to the center of the image. This experiment evaluates the importance of obtaining a full period in the frequency domain.
 \subsection{Part A}
 Part A uses a 2D function/image with a rectangle at the center of the image with a length and with of 32. The function is as follows: $$f(x,y) = \left \{ \begin{array}{l l} 1 & \quad \text{if $-16 < x \leq 16$ , $-16 < y \leq 16$}\\ 0 & \quad \text{Otherwise}\end{array} \right.$$
 
@@ -70,7 +81,7 @@ Part A uses a 2D function/image with a rectangle at the center of the image with
   \end{subfigure}
   \begin{subfigure}{5.1cm}
     \includegraphics[width=5.1cm]{images/rect_512_32x32_FU.png}
-    \caption{Fourier transform unentered.}
+    \caption{Fourier transform uncentered.}
   \end{subfigure}
   \caption{Fourier transform of a 2D 32x32 rectangle function.}
   \label{fig:ft_3232}
@@ -90,7 +101,7 @@ Part B uses a 2D function/image with a rectangle at the center of the image with
   \end{subfigure}
   \begin{subfigure}{5.1cm}
     \includegraphics[width=5.1cm]{images/rect_512_64x64_FU.png}
-    \caption{Fourier transform unentered.}
+    \caption{Fourier transform not centered.}
   \end{subfigure}
   \caption{Fourier transform of a 2D 64x64 rectangle function.}
   \label{fig:ft_6464}
@@ -110,15 +121,20 @@ Part C uses a 2D function/image with a rectangle at the center of the image with
   \end{subfigure}
   \begin{subfigure}{5.1cm}
     \includegraphics[width=5.1cm]{images/rect_512_128x128_FU.png}
-    \caption{Fourier transform unentered.}
+    \caption{Fourier transform not centered.}
   \end{subfigure}
   \caption{Fourier transform of a 2D 128x128 rectangle function.}
   \label{fig:ft_128128}
 \end{figure}
+\subsection{Discussion}
+Centering the spectrum is an important step when taking the FT. If the spectrum is not centered a full period view will not be present in the result of the FT. Instead 4 half periods can be seen as a result of the FT in figures~\ref{fig:ft_3232},~\ref{fig:ft_6464} \&~\ref{fig:ft_128128}.
+
+The results found from performing parts A-C of this experiment validate the theoretical understanding of the FT of the Rectangle function into the frequency domain. As is seen in figure~\ref{fig:ft_cos} a rectangle function produces the sinc function in the frequency domain. Figures~\ref{fig:ft_3232},~\ref{fig:ft_6464} \&~\ref{fig:ft_128128} represents a sort of 2D sinc functions. The rectangle function represents $\Delta x$ in the spatial domain. As the window at which we sample increases the sinc function in the frequency domain will cross the x-axis at and inversely proportional rate. This can be seen in figures~\ref{fig:ft_3232},~\ref{fig:ft_6464} \&~\ref{fig:ft_128128}, as the rectangle functions length increases the interval at which the sinc function crosses the x-axis decreases.
+
 \section{Experiment 3}
-In this experiment we evaluate whether the magnitude or the phase component in the frequency is more important. To evaluate this we set either the phase component to zero or the magnitude to one to see the effects of the one in use over the other. The magnitude is set to one in order to remove its effects on the image while maintaining the a visual represntation of the image. This simply means that every frequency in the image will have the same magnitude.s
+In this experiment it is determined whether the magnitude or the phase component in the frequency domain is more important. To evaluate this either the phase component is set to zero or the magnitude is set to one to see the effects of one component over the other. The magnitude is set to one in order to remove its effects on the image while maintaining the a visual representation of the image. This simply means that every frequency in the image will have the same magnitude.
 \subsection{Part A}
-In part A the importance of the phase coponent is tested. The phase component in the frequency domain is set to zero prior to the inverse tranform.
+In part A the importance of the phase component is tested. The phase component in the frequency domain is set to zero prior to the inverse transformation.
 \begin{figure}[hbtp]
   \centering
   \begin{subfigure}{5.1cm}
@@ -129,15 +145,15 @@ In part A the importance of the phase coponent is tested. The phase component in
     \includegraphics[width=5.1cm]{images/lenna_mag_only.png}
     \caption{No phase info.}
   \end{subfigure}
-  \caption{Fourier Tranform where the phase information is set to zero and only the magnitude component is kept.}
+  \caption{Fourier Transform where the phase information is set to zero and only the magnitude component is kept.}
   \label{fig:ft_mag}
 \end{figure}
 \subsection{Part B}
-In part A the importance of the magnitude component is tested. The magnitude component in the frequency domain is set to one prior to the inverse tranform. In order to set the magnitue to one a property of Euler's formula is used.
+In part B the importance of the magnitude component is tested. The magnitude component in the frequency domain is set to one prior to the inverse transformation. In order to set the magnitue to one a property of Euler's formula is used.
 \begin{equation}
 \mathrm{e}^{\pm j\theta} = cos(\theta) \pm j sin(\theta)
 \end{equation}
-The property gives a formula to set the magnitude to one:
+The property is a formula that shows when the magnitude is one:
 \begin{equation}
 |\mathrm{e}^{\pm j\theta}| = \sqrt{cos^{2}(\theta) \pm sin^{2}(\theta)} = 1
 \label{eq:mag}
@@ -147,9 +163,7 @@ Using this formula the magnitude in the frequency domain can be set to one. All 
  \theta = tan^{-1}(b/a)
  \label{eq:phase}
 \end{equation}
-$\theta$ is the phase component of the complex number represented by the inverse tangent of $b$ and $a$, where is $b$ is the imaginary portion of the number and $a$ is the real portion. Using equations~\ref{eq:phase} and~\ref{eq:mag} the magnitude of the frequency domain can be set to one, thus removing the effects of the magnitude component from the image.
-
-
+$\theta$ is the phase component of the complex number represented by the inverse tangent of $b$ and $a$, where $b$ is the imaginary portion of the number and $a$ is the real portion. Using equations~\ref{eq:phase} and~\ref{eq:mag} the magnitude of the frequency domain can be set to one, thus removing the effects of the magnitude component from the image.
 
 \begin{figure}[hbtp]
   \centering
@@ -161,8 +175,11 @@ $\theta$ is the phase component of the complex number represented by the inverse
     \includegraphics[width=5.1cm]{images/lenna_phase_only.png}
     \caption{No magnitude info.}
   \end{subfigure}
-  \caption{Fourier Tranform where the magnitude information is set to onq and only the phase component is kept.}
+  \caption{Fourier Tranform where the magnitude information is set to one and only the phase component is kept.}
   \label{fig:ft_phase}
 \end{figure}
+
+\subsection{Discussion}
+It is clear from the results that the phase component of the frequency domain contains the more important image information as the image is partially intact after the magnitude has been set to a constant value. You are still able to visually see lenna in figure~\ref{fig:ft_phase}. Where as in figure~\ref{fig:ft_mag} no relation to the original image can be seen in the result. This is due to the fact that the phase component represents the shift amount of each cosine and sine function in the frequency domain. When the phase is removed you effectively center each sine and cosine at zero aligning each one and destroying the signal. In the other scenario when the magnitude is set to one the shifting information of the signal is still present simply the magnitudes are not maintained. This allows for some traits of the image to be seen in the result.
 
 \end{document}

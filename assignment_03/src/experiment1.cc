@@ -52,6 +52,13 @@ int main(int argc, char *argv[]) {
     f_1d[i+1] = complex_num.imag();
   }
 
+  std::ofstream fout;
+  fout.open("function_f.dat");
+  for (int i = 0; i < 4 ; ++i) {
+    fout << f_1d[2*i+1] << "," << f_1d[2*i+2] << "," << sqrt(pow(f_1d[2*i+1],2) + pow(f_1d[2*i+2],2)) << "\n";
+  }
+  fout.close();
+  fout.clear();
   // Perfrom Inverse Transfrom
   fft(f_1d, 4, 1);
 
@@ -90,17 +97,17 @@ int main(int argc, char *argv[]) {
     f_cos[i] = complex_num.real();
     f_cos[i+1] = complex_num.imag();
   }
+
+  for (int i = 0; i < 128; ++i) {
+    if ((i+1)%2)
+      f_cos[2*i+1] *= -1;
+  }
   // Output data
-  std::ofstream fout;
   fout.open("function_cos_128.dat");
   for (int i = 0; i < 128 ; ++i) {
     printf("F(%d)_real: %f\n", i+1, f_cos[2*i+1]);
     printf("F(%d)_imag: %f\n", i+1, f_cos[2*i+2]);
-    if ( i==0 ) {
-      fout << sqrt(pow(f_cos[2*i+1],2) + pow(f_cos[2*i+2],2));
-    } else {
-      fout << "," << sqrt(pow(f_cos[2*i+1],2) + pow(f_cos[2*i+2],2));
-    }
+    fout << f_cos[2*i+1] << "," << f_cos[2*i+2] << "," << sqrt(pow(f_cos[2*i+1],2) + pow(f_cos[2*i+2],2)) << "\n";
   }
   fout.close();
   fout.clear();
@@ -144,11 +151,7 @@ int main(int argc, char *argv[]) {
 
   fout.open("function_rect_128.dat");
   for (int i = 0; i < 128 ; ++i) {
-    if ( i==0 ) {
-      fout << sqrt(pow(rect[2*i+1],2) + pow(rect[2*i+2],2));
-    } else {
-      fout << "," << sqrt(pow(rect[2*i+1],2) + pow(rect[2*i+2],2));
-    }
+    fout << rect[2*i+1] << "," << rect[2*i+2] << "," << sqrt(pow(rect[2*i+1],2) + pow(rect[2*i+2],2)) << "\n";
   }
   fout.close();
   fout.clear();
