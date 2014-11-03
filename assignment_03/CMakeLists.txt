@@ -19,3 +19,10 @@ ADD_EXECUTABLE( experiment_2
   src/fft_tools.cc
   ${image_HEADERS}
 )
+
+ADD_EXECUTABLE( experiment_3
+  src/experiment3.cc
+  src/fft.cc
+  src/fft_tools.cc
+  ${image_HEADERS}
+)

@@ -21,4 +21,6 @@
 
 namespace img_tools {
 void fft2D(int N, int M, float ** real_fuv, float ** imag_fuv, int isign);
+void ReMap(float ** image, int w, int h);
+void ReMapShift(float ** image, int w, int h);
 } // namespace img_tools

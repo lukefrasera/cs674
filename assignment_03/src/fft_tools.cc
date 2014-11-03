@@ -21,6 +21,7 @@
 // Inlcude Project Soecific
 #include "fft_tools.h"
 #include "fft.h" 
+#include <complex>
 
 namespace img_tools {
 void fft2D(int N, int M, float ** real_fuv, float ** imag_fuv, int isign) {
@@ -29,39 +30,76 @@ void fft2D(int N, int M, float ** real_fuv, float ** imag_fuv, int isign) {
     for (int i = 0; i < N; ++i) {
       for (int j = 0; j < N; ++j) {
         // Build the strip
-        strip[2*j+1] = real_fuv[i][j];
-        strip[2*j+2] = imag_fuv[i][j];
+        strip[2*j+1] = real_fuv[i+1][j+1];
+        strip[2*j+2] = imag_fuv[i+1][j+1];
       }
 
       // compute the forurier transform of the strip
       fft(strip, N, isign);
-      for (int j = 0; j < N; ++j) {
+
+      for (int j =01; j < N; ++j) {
         // copy strip back to pointers
-        real_fuv[i][j] = strip[2*j+1];
-        imag_fuv[i][j] = strip[2*j+2];
+        real_fuv[i+1][j+1] = strip[2*j+1];
+        imag_fuv[i+1][j+1] = strip[2*j+2];
       }
     }
-
     // compute transform of columns
     for (int j = 0; j < N; ++j) {
       for (int i = 0; i < N; ++i) {
         // Build the strip
-        strip[2*i+1] = real_fuv[i][j];
-        strip[2*i+2] = imag_fuv[i][j];
+        strip[2*i+1] = real_fuv[i+1][j+1];
+        strip[2*i+2] = imag_fuv[i+1][j+1];
       }
-      for ( int k = 0; k < 2*N+1; ++k) {
-        printf("Strip:%f\n", strip[k]);
-      }
-      printf("\n");
       fft(strip, N, isign);
+
       for (int i = 0; i < N; ++i) {
         // copy strip back to pointers
-        real_fuv[i][j] = strip[2*i+1];
-        imag_fuv[i][j] = strip[2*i+2];
+        real_fuv[i+1][j+1] = strip[2*i+1];  
+        imag_fuv[i+1][j+1] = strip[2*i+2];
       }
     }
   } else {
     printf("Image Width and Height are not Equal: M:%d, N:%d\n", M, N);
+  }
+}
+
+void ReMap(float ** image, int w, int h) {
+  float min=255, max=0;
+  for (int i =0; i<h; ++i) {
+    for (int j = 0; j<w; ++j) {
+      float pixelval = image[i][j];
+      if (min > pixelval) {min = pixelval;};
+      if (max < pixelval) {max = pixelval;};
+    }
+  }
+  // compute remap values
+  float scale_factor = 255.0f/(max - min);
+  float shift_factor = -scale_factor*min;
+
+  for (int i = 0; i<h; ++i) {
+    for (int j = 0; j<w; ++j) {
+      image[i][j] =  scale_factor * image[i][j] + shift_factor;
+    }
+  }
+}
+
+void ReMapShift(float ** image, int w, int h) {
+  float min=255, max=0;
+  for (int i =1; i<h+1; ++i) {
+    for (int j = 1; j<w+1; ++j) {
+      float pixelval = image[i][j];
+      if (min > pixelval) {min = pixelval;};
+      if (max < pixelval) {max = pixelval;};
+    }
+  }
+  // compute remap values
+  float scale_factor = 255.0f/(max - min);
+  float shift_factor = -scale_factor*min;
+
+  for (int i = 1; i<h+1; ++i) {
+    for (int j = 1; j<w+1; ++j) {
+      image[i][j] =  scale_factor * image[i][j] + shift_factor;
+    }
   }
 }
 } // namespace img_tools

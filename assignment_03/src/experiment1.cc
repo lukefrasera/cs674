@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <complex>
 #include <math.h>
+#include <fstream>
 
 #define PI 3.14159265359
 
@@ -93,5 +94,43 @@ int main(int argc, char *argv[]) {
     printf("F(%d)_real: %f\n", i+1, f_cos[2*i+1]);
     printf("F(%d)_imag: %f\n", i+1, f_cos[2*i+2]);
   }
+  printf("\n");
+  // create sinc function
+
+  // import data
+  std::ifstream fin;
+  float rect[257];
+  fin.open("../assignment_03/Rect_128.dat");
+  if(fin.is_open()) {
+    for (int i = 0; i < 128; ++i) {
+      fin >> rect[2*i+1];
+      rect[2*i+2] = 0;
+    }
+    fin.close();
+  } else {
+    printf("File Not Found\n");
+  }
+
+  // Center Spektrum
+  for (int i = 0; i < 128; ++i) {
+    if ((i+1)%2)
+      rect[2*i+1] *= -1;
+  }
+
+  // display data
+  for ( int i = 0; i < 128; ++i) {
+    printf("F(%d)_real: %f\n", (i+1)/*-128/2*/, rect[2*i+1]);
+    printf("F(%d)_imag: %f\n", (i+1)/*-128/2*/, rect[2*i+2]);
+  }
+  // compute FT
+  fft(rect, 128, -1);
+  for (int i = 1; i < 257; i += 2) {
+    complex_num = std::complex<float>(rect[i], rect[i+1]);
+    complex_num /= 128.0;
+    rect[i] = complex_num.real();
+    rect[i+1] = complex_num.imag();
+  }
+
+  
   return 0;
 }

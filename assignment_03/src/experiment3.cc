@@ -1,4 +1,4 @@
-//"experiment1.cc"
+//"experiment2.cc"
 //
 //  Copyright (c) Luke Fraser 2014
 //
@@ -68,28 +68,55 @@ int main(int argc, char *argv[]) {
     }
   }
 
-
+  if (atoi(argv[3])==0) {
+    // Set phase to zero
+    for (int i = 1; i < N+1; ++i) {
+      for (int j = 1; j < N+1; ++j) {
+        image_real[i][j] = sqrt(pow(image_real[i][j],2) + pow(image_imag[i][j],2));
+        image_imag[i][j] = 0;
+      }
+    }
+  } else {
+    // set magnitude to 1
+    float theta;
+    for (int i = 1; i < N+1; ++i) {
+      for (int j = 1; j < N+1; ++j) {
+        theta = atan2(image_imag[i][j],image_real[i][j]);
+        image_real[i][j] = cos(theta);
+        image_imag[i][j] = sin(theta);
+      }
+    }
+  }
   // computer inverse tranform
-  // img_tools::fft2D(M, N, image_real, image_imag, 1);
+  img_tools::fft2D(M, N, image_real, image_imag, 1);
+
+  if (atoi(argv[3])==0) {
+    for (int i = 1; i < N+1; ++i) {
+      for (int j = 1; j < N+1; ++j) {
+        if ((i + j)%2)
+          image_real[i][j] *= -1;
+        image_real[i][j] = abs(image_real[i][j])<255.0 ? image_real[i][j] : 255.0;
+      }
+    }
+    // img_tools::ReMapShift(image_real, N, N);
+  } else {
+    for (int i = 1; i < N+1; ++i) {
+      for (int j = 1; j < N+1; ++j) {
+        // image_real[i][j] = abs(image_real[i][j]);
+        if ((i + j)%2)
+          image_real[i][j] *= -1;
+      }
+    }
+    img_tools::ReMapShift(image_real, N, N);
+  }
 
   // save image to disk
-  float ** f_image = new float*[rows];
   for (int i = 0; i < rows; ++i) {
-    f_image[i] = new float[cols];
     for (int j = 0; j < cols; ++j) {
-      // image.setPixelVal(i, j, log(1.+sqrt(pow(image_real[i+1][j+1], 2.) + pow(image_imag[i+1][j+1], 2.))));
-      // printf("Mag:%f\n", log(1.+sqrt(pow(image_real[i+1][j+1], 2.) + pow(image_imag[i+1][j+1], 2.))));
-      f_image[i][j] = log(1.+sqrt(pow(image_real[i+1][j+1], 2.) + pow(image_imag[i+1][j+1], 2.)));
+      image.setPixelVal(i, j, abs(image_real[i+1][j+1]));
       // printf("Image Value: %d\n", image.getPixelVal(i,j));
     }
   }
-  img_tools::ReMap(f_image, rows, cols);
-  for (int i = 0; i < rows; ++i) {
-    for (int j = 0; j < cols; ++j) {
-      image.setPixelVal(i,j, f_image[i][j]);
-    }
-  }
-
   writeImage(argv[2], image);
   return 0;
 }
