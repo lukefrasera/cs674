@@ -1,4 +1,4 @@
-//"noise_removal.cc"
+//"restoration_tools.h"
 //
 //  Copyright (c) Luke Fraser 2014
 //
@@ -16,12 +16,12 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with cs674Class.  If not, see <http://www.gnu.org/licenses/>.
-#include "ReadImage.h"
-#include "ReadImageHeader.h"
-#include "WriteImage.h"
-#include <stdio.h>
 
-int main(int argc, char * argv[]) {
-	
-  return 0;
-}
+#ifndef RESTORATION_H_
+#define RESTORATION_H_
+
+namespace img_tools {
+// Image Tools NameSpace
+
+} // namespace img_tools
+#endif // RESTORATION_H_
