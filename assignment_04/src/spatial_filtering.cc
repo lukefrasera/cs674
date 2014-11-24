@@ -30,9 +30,21 @@ void Convolution2D(ImageType &input, ImageType &output, Point mask_size,
   Filter2D(input, output, mask_size, mask, anchor, boundries);
 }
 
+void Convolution2Df(float** input, int rows, int cols, Point mask_size,
+    float** mask, Point anchor, int boundries) {
+  FlipKernel2D(mask, mask_size);
+  // anchor = /*new anchor position*/;
+  Filter2Df(input, rows, cols, mask_size, mask, anchor, boundries);
+}
+
 void Correlation2D(ImageType &input, ImageType &output, Point mask_size,
     float** mask, Point anchor, int boundries) {
   Filter2D(input, output, mask_size, mask, anchor, boundries);
+}
+
+void Correlation2Df(float** input, int rows, int cols, Point mask_size,
+    float** mask, Point anchor, int boundries) {
+  Filter2Df(input, rows, cols, mask_size, mask, anchor, boundries);
 }
 
 void Filter2D(ImageType &input, ImageType &output, Point size,
@@ -61,6 +73,43 @@ void Filter2D(ImageType &input, ImageType &output, Point size,
       // printf("Sum: %f\n", sum);
     }
   }
+}
+
+void Filter2Df(float** input, int rows, int cols, Point size,
+    float** kernel, Point anchor, int boundries) {
+
+  float ** output  = new float*[rows];
+  for (int i = 0; i < rows; ++i)
+    output[i] = new float[cols];
+  // For each pixel in the input image
+  for (int i = 0; i < rows; ++i) {
+    for (int j = 0; j < cols; ++j) {
+      // Perform the convolution
+      float sum = 0;
+      Point sample;
+      for (int k = 0; k < size.x; ++k) {
+        for (int l = 0; l < size.y; ++l) {
+          // handle image bounds
+          sample.x = abs(i + k - anchor.x);
+          sample.y = abs(j + l - anchor.y);
+          if (sample.x >= rows)
+            sample.x = rows-1 - sample.x % rows;
+          if (sample.y >= cols)
+            sample.y = cols-1 - sample.y % cols;
+          sum += input[sample.x][sample.y] * kernel[k][l];
+        }
+      }
+      output[i][j] = sum;
+    }
+  }
+
+  for (int i = 0; i < rows; ++i) {
+    for (int j = 0; j < cols; ++j) {
+      input[i][j] = output[i][j];
+    }
+    delete [] output[i];
+  }
+  delete [] output;
 }
 
 void MedianFilter(ImageType &input, ImageType &output, Point size, Point anchor, int boundries) {

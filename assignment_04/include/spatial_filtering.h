@@ -36,6 +36,12 @@ void Correlation2D(ImageType &input, ImageType &output, Point mask_size,
     float** mask, Point anchor, int boundries);
 void Filter2D(ImageType &input, ImageType &output, Point size,
     float** kernel, Point anchor, int boundries);
+void Convolution2Df(float** input, int rows, int cols, Point mask_size,
+    float** mask, Point anchor, int boundries);
+void Correlation2Df(float** input, int rows, int cols, Point mask_size,
+    float** mask, Point anchor, int boundries);
+void Filter2Df(float** input, int rows, int cols, Point size,
+    float** kernel, Point anchor, int boundries);
 void FlipKernel2D(float** kernel, Point size);
 void ImageToMask(ImageType image, float** mask);
 void ReMap(ImageType &image);

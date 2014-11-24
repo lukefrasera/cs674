@@ -12,6 +12,7 @@ ADD_EXECUTABLE( noise_removal
   src/noise_removal.cc
   src/fft.cc
   src/fft_tools.cc
+  src/spatial_filtering.cc
   ${image_HEADERS}
 )
 

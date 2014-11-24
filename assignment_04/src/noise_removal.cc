@@ -24,6 +24,7 @@
 #include "fft_tools.h"
 #include <complex>
 #include <math.h>
+#include "spatial_filtering.h"
 
 #define PI 3.14159265359
 
@@ -73,24 +74,75 @@ int main(int argc, char * argv[]) {
 
     // compute magnitude image
   float ** f_image = new float*[rows];
+  float ** f_grad_x = new float*[rows];
+  float ** f_grad_y = new float*[rows];
   for (int i = 0; i < rows; ++i) {
     f_image[i] = new float[cols];
+    f_grad_x[i] = new float[cols];
+    f_grad_y[i] = new float[cols];
     for (int j = 0; j < cols; ++j) {
       // image.setPixelVal(i, j, log(1.+sqrt(pow(image_real[i+1][j+1], 2.) + pow(image_imag[i+1][j+1], 2.))));
       // printf("Mag:%f\n", log(1.+sqrt(pow(image_real[i+1][j+1], 2.) + pow(image_imag[i+1][j+1], 2.))));
       f_image[i][j] = sqrt(pow(image_real[i+1][j+1], 2.) + pow(image_imag[i+1][j+1], 2.));
+      f_grad_x[i][j] = f_image[i][j];
+      f_grad_y[i][j] = f_image[i][j];
       // printf("Image Value: %d\n", image.getPixelVal(i,j));
     }
   }
     // Take image gradient
-
-    // Search for local maximum in that are spherical
-
+  // img_tools::Point anchor = {1, 1};
+  // img_tools::Point size = {3, 3};
+  // float ** mask = new float*[size.x];
+  // for (int i =0; i< size.x; ++i) {
+  //   mask[i] = new float[size.y];
+  // }
+  // for (int i = 0; i<size.x; ++i) {
+  //   for (int j =0; j < size.y; ++j) {
+  //     mask[i][j] = img_tools::sobelx[i][j];
+  //   }
+  // }
+  // img_tools::Convolution2Df(f_grad_x, rows, cols, size, mask, anchor, 0);
+  // for (int i = 0; i<size.x; ++i) {
+  //   for (int j =0; j < size.y; ++j) {
+  //     mask[i][j] = img_tools::sobely[i][j];
+  //   }
+  // }
+  // img_tools::Convolution2Df(f_grad_y, rows, cols, size, mask, anchor, 0);
+  // delete [] mask;
+  //   // Search for local maximum in that are spherical
+  // for (int i = 0; i < rows; ++i) {
+  //   for (int j = 0; j < cols; ++j) {
+  //     f_grad_x[i][j] = abs(f_grad_x[i][j]);
+  //   }
+  // }
     // Set to zero
+  float dist;
+  for (int i = 0; i < rows; ++i) {
+    for (int j = 0; j < cols; ++j) {
+      dist = sqrt(pow(i-rows/2,2)+pow(j-cols/2,2)); // Euclidean distance
+      if (dist > 34.27 && f_image[i][j] > .0190 && dist < 37.5){
+        f_image[i][j] = 0.0;
+        // printf("Points set to zero: %d, %d value: %f, i%f\n", i, j, image_real[i][j], image_imag[i][j]);
+        image_real[i][j] = 0.0;
+        image_imag[i][j] = 0.0;
+      }
+    }
+  }
+
+  img_tools::fft2D(M, N, image_real, image_imag, 1);
+
+  for (int i = 0; i < rows; ++i) {
+    for (int j = 0; j < cols; ++j) {
+      if ((i+1 + j+1)%2)
+        image_real[i+1][j+1] *= -1;
+      f_image[i][j] = log(1.0 + sqrt(pow(f_grad_x[i][j],2) + pow(f_grad_y[i][j], 2)));
+    }
+  }
+
   img_tools::ReMap(f_image, rows, cols);
   for (int i = 0; i < rows; ++i) {
     for (int j = 0; j < cols; ++j) {
-      image.setPixelVal(i,j, f_image[i][j]);
+      image.setPixelVal(i,j, image_real[i][j]);
     }
   }
   writeImage(argv[2], image);
