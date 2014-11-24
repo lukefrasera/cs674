@@ -17,11 +17,11 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-This is my abstract
+In this project we analyze the effects of filtering in the frequency domain. In many cases transforming data into the frequency domain allows for different types of image analysis and restoration means over the spatial domain. This can be seen especially in periodic noise removal. Performing convolution on an image is also faster in the frequency domain over the spatial domain when the two functions being convolved are roughly the same size. This report shows examples of frequency domain filtering on images to show the usefulness of the frequency domain in image processing.
 \end{abstract}
 
-\section{Introduction}
 \section{Noise Removal}
+Noise removal typically involves blurring and image with a low-pass filter of some kind. The typical procedure of removing noise involves convolving an image with a gaussian function with a certain variance. This produces a smoother image with high frequency information removed. If we have \emph{a priori} knowledge about the type of noise we can make smart decisions about how to remove the noise. For the case of periodic noise in an image as seen in figure~\ref{fig:noise_periodic} convolution with a Gaussian will not adequetly remove the noise. In this case the frequency domain is perfect for removing repeating patterns of noise. In figure~\ref{fig:noise_periodic} an image of boy had additive noise applied the image values. The noise is cosine noise. When the image is transformed into the frequency domain the noise will appear as peaks in the spectrum of the image as seen figure~\ref{fig:noise_spectrum}. The noise can be removed cleanly with a band-reject filter in the frequency domain without effecting the rest of the image. Figure~\ref{fig:noise_removal} is an example of applying a band-reject filter on the boy image. The noise is completely removed with much effect on the rest of the image. The filter is also able to maintain the high-frequency information of the image. This is a key distinction between filtering in the spatial domain and in the frequency domain.
 \section{Convolution in the frequency domain}
 \section{Motion blur}
 \section{Homomorphic filtering}
