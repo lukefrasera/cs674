@@ -20,8 +20,23 @@
 #ifndef RESTORATION_H_
 #define RESTORATION_H_
 
-namespace img_tools {
-// Image Tools NameSpace
+#include "fft.h"
+#include "fft_tools.h"
+#include <complex>
+#include <math.h>
+#include <stdio.h>
 
+namespace img_tools {
+class Filter {
+public:
+  Filter(Point size);
+  ~Filter();
+
+  std::complex<float> ** data;
+  Point size;
+};
+// Image Tools NameSpace
+void ComputeMotionFilter(Filter H, float a, float b, float T);
+void MultFilterImage(Filter H, Filter F);
 } // namespace img_tools
 #endif // RESTORATION_H_

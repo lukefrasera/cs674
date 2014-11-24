@@ -23,6 +23,9 @@ ADD_EXECUTABLE( convolution_freq
 
 ADD_EXECUTABLE( motionblur
   src/motionblur.cc
+  src/fft.cc
+  src/fft_tools.cc
+  src/restoration_tools.cc
   ${image_HEADERS}
 )
 
