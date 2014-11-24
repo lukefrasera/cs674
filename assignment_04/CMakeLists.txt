@@ -10,6 +10,8 @@ include_directories(
 
 ADD_EXECUTABLE( noise_removal
   src/noise_removal.cc
+  src/fft.cc
+  src/fft_tools.cc
   ${image_HEADERS}
 )
 
