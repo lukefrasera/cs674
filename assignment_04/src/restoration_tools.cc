@@ -16,8 +16,11 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with cs674Class.  If not, see <http://www.gnu.org/licenses/>.
-namespace img_tools {
+#include "restoration_tools.h"
 #include <complex>
+#include <math.h>
+namespace img_tools {
+
 #define PI 3.14159265359
 
 Filter::Filter(Point size) {

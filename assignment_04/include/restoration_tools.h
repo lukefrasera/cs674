@@ -27,6 +27,15 @@
 #include <stdio.h>
 
 namespace img_tools {
+
+class Point {
+public:
+  int x,y;
+  Point(int x_, int y_) {
+    x = x_;
+    y = y_;
+  }
+};
 class Filter {
 public:
   Filter(Point size);
@@ -35,6 +44,7 @@ public:
   std::complex<float> ** data;
   Point size;
 };
+
 // Image Tools NameSpace
 void ComputeMotionFilter(Filter H, float a, float b, float T);
 void MultFilterImage(Filter H, Filter F);

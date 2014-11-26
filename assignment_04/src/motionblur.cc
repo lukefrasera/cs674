@@ -68,7 +68,7 @@ int main(int argc, char * argv[]) {
     }
   }
 
-  Filter F(N, N);
+  img_tools::Filter F(img_tools::Point(N, N));
   for (int i = 1; i < N+1; ++i) {
     for (int j = 1; j < N+1; ++j) { 
       F.data[i-1][j-1] = std::complex<float>(image_real[i][j], image_imag[i][j]);
@@ -76,7 +76,7 @@ int main(int argc, char * argv[]) {
   }
 
   // compute H(u,v)
-  Fitler H(Point(cols,rows));
+  img_tools::Filter H(img_tools::Point(cols,rows));
   img_tools::ComputeMotionFilter(H, 0.1, 0.1, 1);
 
   // complex multiplication
