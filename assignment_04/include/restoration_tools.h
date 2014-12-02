@@ -25,6 +25,7 @@
 #include <complex>
 #include <math.h>
 #include <stdio.h>
+// #include <string.h>
 
 namespace img_tools {
 
@@ -38,8 +39,9 @@ public:
 };
 class Filter {
 public:
+  // Filter();
   Filter(Point size);
-  ~Filter();
+  // ~Filter();
 
   std::complex<float> ** data;
   Point size;
@@ -48,5 +50,10 @@ public:
 // Image Tools NameSpace
 void ComputeMotionFilter(Filter H, float a, float b, float T);
 void MultFilterImage(Filter H, Filter F);
+void ComputeButterWorthFilter(Filter H, float lamnda_low, float lamnda_high, float d_not);
+void ExtendImagef(float ** &image, int rows, int cols, int N);
+void InverseFiltering(Filter H, Filter F);
+void WienerFiltering(Filter H, Filter F, float K);
+float box_muller(float m, float s);
 } // namespace img_tools
 #endif // RESTORATION_H_
