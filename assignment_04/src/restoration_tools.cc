@@ -151,6 +151,7 @@ float box_muller(float m, float s) {  /* normal random variate generator */
     y2 = x2 * w;
     use_last = 1;
   }
+  // printf("Rand Number: %f\n", static_cast<double>(rand())/RAND_MAX);
   return( m + y1 * s );
 }
 } // namespace img_tools

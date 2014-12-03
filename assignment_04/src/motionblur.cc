@@ -221,7 +221,7 @@ int main(int argc, char * argv[]) {
       if ((i+1 + j+1)%2)
         image_real[i+1][j+1] *= -1;
 
-      image_real[i+1][j+1] = image_real[i+1][j+1] + img_tools::box_muller(0.0f, 10);
+      image_real[i+1][j+1] = image_real[i+1][j+1] + img_tools::box_muller(0.0f, 1000);
       if (image_real[i+1][j+1] > max)
         max = image_real[i+1][j+1];
       if (image_real[i+1][j+1] < min)
@@ -231,10 +231,10 @@ int main(int argc, char * argv[]) {
 
   for (int i = 0; i < rows; ++i) {
     for (int j = 0; j < cols; ++j) {
-      image_real[i+1][j+1] = (image_real[i+1][j+1] - min / (max-min))*255;
+      image_real[i+1][j+1] = (image_real[i+1][j+1] - min)/(max-min)*255;
     }
   }
-  // img_tools::ReMap(image_real, N, N);
+  // img_tools::ReMapShift(image_real, N, N);
   // save image
   for (int i = 0; i < rows; ++i) {
     for (int j = 0; j < cols; ++j) {
