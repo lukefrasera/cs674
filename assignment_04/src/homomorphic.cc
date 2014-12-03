@@ -22,5 +22,29 @@
 #include <stdio.h>
 
 int main(int argc, char * argv[]) {
+  // import image
+  int rows, cols, bytes;
+  bool type;
+
+  readImageHeader(argv[1], rows, cols, bytes, type);
+  ImageType image(rows, cols, bytes);
+  readImage(argv[1], image);
+
+  // Prepare for FT
+  float ** image_real = new float*[rows+1];
+  float ** image_imag = new float*[rows+1];
+  image_real[0] = new float[cols+1];
+  image_imag[0] = new float[cols+1];
+  // Transfer to floating point
+  for (int i = 0; i < rows; ++i) {
+    image_real[i+1] = new float[cols+1];
+    image_imag[i+1] = new float[cols+1];
+    for (int j = 0; j < cols; ++j) {
+      image_real[i+1][j+1] = image.getPixelVal(i, j);
+      image_imag[i+1][j+1] = 0;
+      if ((i+1 + j+1)%2)
+        image_real[i+1][j+1] *= -1;
+    }
+  }
   return 0;
 }
