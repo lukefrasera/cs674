@@ -21,6 +21,7 @@ ADD_EXECUTABLE( convolution_freq
   src/fft.cc
   src/fft_tools.cc
   src/restoration_tools.cc
+  src/spatial_filtering.cc
   ${image_HEADERS}
 )
 

@@ -72,15 +72,28 @@ int main(int argc, char * argv[]) {
 
   for (int i = 0; i < 3; ++i) {
     for (int j = 0; j < 3; ++j) {
-      mask_real[i + M/2-1][j + M/2-1] = img_tools::sobely[i][j];
-      if ((i + M/2-1 + j + M/2-1)%2)
-        mask_real[i + M/2-1][j + M/2-1] *= -1;
+      mask_real[i + M/2][j + M/2] = img_tools::sobelx[i][j];
+    }
+  }
+  for (int i = 0; i < M; ++i) {
+    for (int j = 0; j < M; ++j) {
+      if ((i+1 + j+1)%2){
+        mask_real[i+1][j+1] *= -1;
+      }
     }
   }
 
-  img_tools::fft2D(M, M, image_real, image_imag, 1);
-  img_tools::fft2D(M, M, mask_real, mask_imag, 1);
+  img_tools::fft2D(M, M, image_real, image_imag, -1);
+  img_tools::fft2D(M, M, mask_real, mask_imag, -1);
 
+  for (int i = 0; i < M; ++i) {
+    for (int j = 0; j < M; ++j) {
+      mask_real[i][j] = 0;
+      if ((i+1 + j+1)%2){
+        mask_imag[i+1][j+1] *= -1;
+      }
+    }
+  }
   // Perfrom complex division
   std::complex<float> complex_num;
   for (int i = 1; i < M+1; ++i) {
@@ -112,15 +125,15 @@ int main(int argc, char * argv[]) {
 
   img_tools::MultFilterImage(H, F);
 
-  for (int i = 1; i < N+1; ++i) {
-    for (int j = 1; j < N+1; ++j) { 
+  for (int i = 1; i < M+1; ++i) {
+    for (int j = 1; j < M+1; ++j) { 
       image_real[i][j] = F.data[i-1][j-1].real();
       image_imag[i][j] = F.data[i-1][j-1].imag();
     }
   }
 
-  img_tools::fft2D(M, M, image_real, image_imag, -1);
-  img_tools::fft2D(M, M, mask_real, mask_imag, -1);
+  img_tools::fft2D(M, M, image_real, image_imag, 1);
+  // img_tools::fft2D(M, M, mask_real, mask_imag, 1);
   for (int i = 0; i < M; ++i) {
     for (int j = 0; j < M; ++j) {
       if ((i+1 + j+1)%2){
@@ -130,11 +143,28 @@ int main(int argc, char * argv[]) {
     }
   }
 
+  img_tools::ReMapShift(image_real, N,N);
+
   for (int i = 0; i < rows; ++i) {
     for (int j = 0; j < cols; ++j) {
+      // printf("%f\n", mask_imag[i][j]);
       image.setPixelVal(i,j, static_cast<int>(image_real[i+1][j+1]));
     }
   }
+
+  float ** mask = new float*[3];
+  for (int i = 0; i < 3; ++i)
+    mask[i] = new float[3];
+
+  for (int i = 0; i < 3; ++i) {
+    for (int j = 0; j < 3; ++j) {
+      mask[i][j] = img_tools::sobelx[i][j];
+    }
+  }
+
+  ImageType output(rows, cols, bytes);
+  img_tools::Convolution2D(image, output, img_tools::Point(3,3), mask, img_tools::Point(1,1), 1);
   writeImage(argv[2], image);
+  writeImage(argv[3], image);
   return 0;
 }
