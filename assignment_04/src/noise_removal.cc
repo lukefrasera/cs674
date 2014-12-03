@@ -117,19 +117,19 @@ int main(int argc, char * argv[]) {
   // }
     // Set to zero
   float dist;
-  for (int i = 0; i < rows; ++i) {
-    for (int j = 0; j < cols; ++j) {
-      dist = sqrt(pow(i-rows/2,2)+pow(j-cols/2,2)); // Euclidean distance
-      if (dist > 34.27 && f_image[i][j] > .0190 && dist < 37.5){
-        f_image[i][j] = 0.0;
-        // printf("Points set to zero: %d, %d value: %f, i%f\n", i, j, image_real[i][j], image_imag[i][j]);
-        image_real[i][j] = 0.0;
-        image_imag[i][j] = 0.0;
-      }
-    }
-  }
+  // for (int i = 0; i < rows; ++i) {
+  //   for (int j = 0; j < cols; ++j) {
+  //     dist = sqrt(pow(i-rows/2,2)+pow(j-cols/2,2)); // Euclidean distance
+  //     if (dist > 34.27 && f_image[i][j] > .0190 && dist < 37.5){
+  //       f_image[i][j] = 0.0;
+  //       // printf("Points set to zero: %d, %d value: %f, i%f\n", i, j, image_real[i][j], image_imag[i][j]);
+  //       image_real[i][j] = 0.0;
+  //       image_imag[i][j] = 0.0;
+  //     }
+  //   }
+  // }
 
-  img_tools::fft2D(M, N, image_real, image_imag, 1);
+  // img_tools::fft2D(M, N, image_real, image_imag, 1);
 
   for (int i = 0; i < rows; ++i) {
     for (int j = 0; j < cols; ++j) {
@@ -142,7 +142,7 @@ int main(int argc, char * argv[]) {
   img_tools::ReMap(f_image, rows, cols);
   for (int i = 0; i < rows; ++i) {
     for (int j = 0; j < cols; ++j) {
-      image.setPixelVal(i,j, image_real[i][j]);
+      image.setPixelVal(i,j, f_image[i][j]);
     }
   }
   writeImage(argv[2], image);

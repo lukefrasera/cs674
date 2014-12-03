@@ -145,8 +145,8 @@ int main(int argc, char * argv[]) {
       F.data[i-1][j-1] = std::complex<float>(image_real[i][j], image_imag[i][j]);
     }
   }
-  // img_tools::InverseFiltering(H, F);
-  img_tools::WienerFiltering( H, F, atof(argv[6]));
+  img_tools::InverseFiltering(H, F);
+  // img_tools::WienerFiltering( H, F, atof(argv[6]));
   for (int i = 1; i < N+1; ++i) {
     for (int j = 1; j < N+1; ++j) { 
       image_real[i][j] = F.data[i-1][j-1].real();
@@ -221,7 +221,7 @@ int main(int argc, char * argv[]) {
       if ((i+1 + j+1)%2)
         image_real[i+1][j+1] *= -1;
 
-      image_real[i+1][j+1] = image_real[i+1][j+1] + img_tools::box_muller(0.0f, 1000);
+      image_real[i+1][j+1] = image_real[i+1][j+1] + img_tools::box_muller(0.0f, 10);
       if (image_real[i+1][j+1] > max)
         max = image_real[i+1][j+1];
       if (image_real[i+1][j+1] < min)
@@ -271,8 +271,9 @@ int main(int argc, char * argv[]) {
       F.data[i-1][j-1] = std::complex<float>(image_real[i][j], image_imag[i][j]);
     }
   }
-  // img_tools::InverseFiltering(H, F);
-  img_tools::WienerFiltering( H, F, atof(argv[6]));
+  img_tools::InverseFiltering(H, F);
+  // img_tools::WienerFiltering( H, F, atof(argv[6]));
+  // img_tools::WienerFiltering( H, F, atof(argv[6]));
   for (int i = 1; i < N+1; ++i) {
     for (int j = 1; j < N+1; ++j) { 
       image_real[i][j] = F.data[i-1][j-1].real();

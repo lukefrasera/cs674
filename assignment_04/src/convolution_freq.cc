@@ -165,6 +165,7 @@ int main(int argc, char * argv[]) {
   ImageType output(rows, cols, bytes);
   img_tools::Convolution2D(image, output, img_tools::Point(3,3), mask, img_tools::Point(1,1), 1);
   writeImage(argv[2], image);
-  writeImage(argv[3], image);
+  img_tools::ReMap(output);
+  writeImage(argv[3], output);
   return 0;
 }
