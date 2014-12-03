@@ -29,8 +29,9 @@ namespace img_tools {
 
 Filter::Filter(Point size_): size(size_.x,size_.y){
   data = new std::complex<float>*[size.y];
-  for (int i = 0; i < size.y; ++i)
+  for (int i = 0; i < size.y; ++i){
     data[i] = new std::complex<float>[size.x];
+  }
 }
 // Filter::~Filter() {
 //   for (int i = 0; i < size.y; ++i)

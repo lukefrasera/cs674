@@ -36,6 +36,10 @@ public:
     x = x_;
     y = y_;
   }
+  Point() {
+    x = 0;
+    y = 0;
+  }
 };
 class Filter {
 public:

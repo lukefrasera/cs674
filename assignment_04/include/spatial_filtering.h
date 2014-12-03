@@ -20,15 +20,16 @@
 #ifndef SPATIAL_FILTERING_H_
 #define SPATIAL_FILTERING_H_
 #include "image.h"
+#include "restoration_tools.h"
 namespace img_tools {
 enum Boundries {
   MIRROR=0,
   ZERO,
 };
 
-struct Point {
-  int x,y;
-};
+// struct Point {
+//   int x,y;
+// };
 
 void Convolution2D(ImageType &input, ImageType &output, Point mask_size,
     float** mask, Point anchor, int boundries);
